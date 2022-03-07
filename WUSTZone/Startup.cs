@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -8,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WUSTZone.Domain;
 
 namespace WUSTZone
 {
@@ -23,6 +26,16 @@ namespace WUSTZone
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // 配置数据库
+            services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
+
+            // 登录认证
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+
+                });
+
             services.AddControllersWithViews();
         }
 
@@ -44,6 +57,9 @@ namespace WUSTZone
 
             app.UseRouting();
 
+            // 登录中间件
+            app.UseAuthentication();
+            //授权中间件
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
