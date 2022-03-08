@@ -124,23 +124,22 @@ namespace WUSTZone.Controllers
                         // 流转换为文件存入文件夹
                         registerViewModel.Photo.CopyTo(fileStream);
                     }
-
-                    CollegeEnum college = (CollegeEnum)registerViewModel.College;
-
-                    // 创建新用户
-                    User newUser = new User
-                    {
-                        UserName = registerViewModel.UserName,
-                        Password = registerViewModel.Password,
-                        Gender = registerViewModel.Gender,
-                        PhotoPath = uniqueFileName,
-                        College = college.GetString(),
-                        Brief = registerViewModel.Brief
-                    };
-
-                    _userRepository.AddUser(newUser);
-                    return RedirectToAction("login");
                 }
+                CollegeEnum college = (CollegeEnum)registerViewModel.College;
+
+                // 创建新用户
+                User newUser = new User
+                {
+                    UserName = registerViewModel.UserName,
+                    Password = registerViewModel.Password,
+                    Gender = registerViewModel.Gender,
+                    PhotoPath = uniqueFileName,
+                    College = college.GetString(),
+                    Brief = registerViewModel.Brief
+                };
+
+                _userRepository.AddUser(newUser);
+                return RedirectToAction("login");
             }
             return View();
         }
