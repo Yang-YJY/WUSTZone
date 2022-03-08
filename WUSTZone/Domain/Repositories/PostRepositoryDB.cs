@@ -66,6 +66,9 @@ namespace WUSTZone.Domain.Repositories
             return newPost;
         }
 
-        
+        public IEnumerable<Post> GetAllPosts()
+        {
+            return context.Posts;
+        }
     }
 }
