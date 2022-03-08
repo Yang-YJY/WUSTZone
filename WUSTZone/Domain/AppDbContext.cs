@@ -13,6 +13,8 @@ namespace WUSTZone.Domain
 
         public DbSet<Post> Posts { get; set; }
 
+        public DbSet<Comment> Comments { get; set; }
+
         public AppDbContext(DbContextOptions options): base(options)
         {
 
@@ -21,6 +23,10 @@ namespace WUSTZone.Domain
         {
             // 设置用户名唯一性约束
             modelBuilder.Entity<User>().HasIndex(user => user.UserName).IsUnique();
+
+            ModelBuilderExtensions.Seed(modelBuilder);
         }
+
+       
     }
 }

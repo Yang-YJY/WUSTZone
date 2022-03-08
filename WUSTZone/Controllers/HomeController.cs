@@ -28,11 +28,23 @@ namespace WUSTZone.Controllers
             _postRepository = postRepository;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int? pageIndex)
         {
+            if(pageIndex == null)
+            {
+                pageIndex = 1;
+            }
+            //每一页大小
+            int pageSize = 10;
+            //分页，类似java 的subList操作
             User currentUser = _userRepository.GetUser(User.Identity.Name);
             ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
-            return View(_postRepository.GetAllPosts());
+
+            IEnumerable<Post> postList = _postRepository.GetAllPosts();
+
+            List<Post> subList =  postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
+
+            return View(subList);
         }
 
 
