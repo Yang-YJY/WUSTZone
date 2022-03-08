@@ -57,7 +57,7 @@ namespace WUSTZone.Domain.Entityies
         [Required]
         public string Condensed { get; set; }
         /// <summary>
-        /// 将上传的图片路径转为json对象再转为字符串后存入数据库
+        /// 上传的图片名称CSV
         /// </summary>
         public string Photo { get; set; }
         

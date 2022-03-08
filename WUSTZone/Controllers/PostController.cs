@@ -14,11 +14,13 @@ namespace WUSTZone.Controllers
     {
 
         private readonly IPostRepository _postRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IWebHostEnvironment webHostEnvironment;
 
-        public PostController(IPostRepository postRepository,IWebHostEnvironment webHostEnvironment)
+        public PostController(IPostRepository postRepository, IUserRepository userRepository,IWebHostEnvironment webHostEnvironment)
         {
             _postRepository = postRepository;
+            _userRepository = userRepository;
             this.webHostEnvironment = webHostEnvironment;
         }
 
@@ -28,61 +30,63 @@ namespace WUSTZone.Controllers
         }
 
     
-        public IActionResult Add(PostViewModel model)
+        /// <summary>
+        /// 处理Get请求，返回发帖页面
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ViewResult Add()
         {
+            User currentUser = _userRepository.GetUser(User.Identity.Name);
+            ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
+            return View();
+        }
 
-            //验证类型和内容非空
+        /// <summary>
+        /// 处理发帖页面提交过来的表单
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult Add(PostViewModel postViewModel)
+        {
             if (ModelState.IsValid)
             {
-                List<string> photoList = new List<string>(); 
-
                 string uniqueFileName = null;
-
-                if (model.Photos!=null && model.Photos.Count > 0)
+                string photoNameCSV = null;
+                if (postViewModel.Photos != null)
                 {
-                    foreach(var photo in model.Photos)
+                    foreach (var photo in postViewModel.Photos)
                     {
                         string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "uploads", "post_photo");
-                        uniqueFileName = Guid.NewGuid().ToString() + "_" + photo.FileName;
+                        uniqueFileName = Guid.NewGuid().ToString() + "_" + Path.GetFileName(photo.FileName);
+                        photoNameCSV += (uniqueFileName + ",");
                         string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                        photo.CopyTo(new FileStream(filePath, FileMode.Create));
-
+                        using (var fileStream = new FileStream(filePath, FileMode.Create))
+                        {
+                            // 流转换为文件存入文件夹
+                            photo.CopyTo(fileStream);
+                        }
                     }
                 }
-
-                uniqueFileName = "";
-
-                for(int i = 0; i < photoList.Count-1; i++)
+                // 新建Post实体
+                Post newPost = new Post
                 {
-                    uniqueFileName = uniqueFileName + photoList[i] + ":";
-                }
-                if(photoList.Count > 0)
-                {
-                    uniqueFileName = uniqueFileName + photoList[photoList.Count - 1];
-                }
-                
-
-                Post newPost = new Post()
-                {
-                    UserId = model.UserId,
-                    TimeStamp = System.DateTime.Now,
-                    Category = PostEnumExtensions.GetString(model.Category),
+                    UserId = _userRepository.GetUser(User.Identity.Name).Id,
+                    Title = postViewModel.Title,
+                    Category = postViewModel.Category,
+                    Content = postViewModel.Content,
+                    Photo = photoNameCSV,
+                    Condensed = postViewModel.Content.Substring(0, Math.Min(postViewModel.Content.Length - 1, 100)),
                     LikeCount = 0,
                     CommentCount = 0,
                     IsPinned = false,
-                    IsSelected = false,
-                    Content = model.Content,
-                    Photo = uniqueFileName
+                    IsSelected = false
                 };
-
                 _postRepository.Add(newPost);
-
-                return RedirectToAction("Index", "home");
+                return RedirectToAction("index", "home");
             }
-            return View(model);
+            return View();
         }
-
-
 
     }
 }
