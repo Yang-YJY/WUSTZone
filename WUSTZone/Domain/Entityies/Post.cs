@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace WUSTZone.Domain.Entityies
@@ -46,5 +48,7 @@ namespace WUSTZone.Domain.Entityies
         [Required]
         [Display(Name = "内容")]
         public string Content { get; set; }
+
+        
     }
 }

@@ -22,12 +22,32 @@ namespace WUSTZone.Controllers
 
         public IActionResult Add(Post post)
         {
-            if (ModelState.IsValid)
-            {
 
-            }
+            ////验证类型和内容非空
+            //if (ModelState.IsValid)
+            //{
+            //    Post newPost = new Post()
+            //    {
+            //        UserId = post.UserId,
+            //        TimeStamp = System.DateTime.Now,
+            //        Category = post.Category,
+            //        LikeCount = 0,
+            //        CommentCount = 0,
+            //        IsPinned = false,
+            //        IsSelected = false,
+            //        Content = post.Content
 
-            return View();
+            //    };
+
+            //    _postRepository.Add(newPost);
+
+            //    //应该要跳转到首页，这里到时候需要改改
+            //    return RedirectToAction("Index");
+
+
+            //}
+
+            return View(post);
         }
 
 
