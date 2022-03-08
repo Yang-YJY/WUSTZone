@@ -1,9 +1,44 @@
-﻿@model IndexViewModel
+﻿@model IEnumerable<WUSTZone.Domain.Entityies.Post>
 @{
     ViewData["Title"] = "主页";
-    ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (Model.PhotoPath ?? "default.png");
 }
 
 <div class="text-center">
     <h1 class="display-4">欢迎来到 WUST Zone</h1>
 </div>
+<br />
+<ul class="nav nav-pills bg-light">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="pill" href="#">全部留言</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="pill" href="#">精选留言</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="pill" href="#">求助</a>
+    </li>
+</ul>
+
+@* 卡片 *@
+<br />
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">这是留言标题</h4>
+        <p class="card-text">这里是简略留言内容这里是简略留言内容这里是简略留言内容这里是简略留言内容这里是简略留言内容这里是简略留言内容这里是简略留言内容这里是简略留言内容这里是简略留言内容这里是简略留言内容...</p>
+        <a href="#" class="card-link">点赞</a>
+        <a href="#" class="card-link">评论</a>
+    </div>
+</div>
+
+@foreach (var post in Model)
+{
+    <br />
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">@post.Title</h4>
+            <p class="card-text">@post.Condensed...</p>
+            <a href="#" class="card-link">点赞(@post.LikeCount)</a>
+            <a href="#" class="card-link">评论(@post.CommentCount)</a>
+        </div>
+    </div>
+}

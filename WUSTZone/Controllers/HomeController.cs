@@ -19,22 +19,20 @@ namespace WUSTZone.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IUserRepository _userRepository;
+        private readonly IPostRepository _postRepository;
 
-        public HomeController(ILogger<HomeController> logger, IUserRepository userRepository)
+        public HomeController(ILogger<HomeController> logger, IUserRepository userRepository, IPostRepository postRepository)
         {
             _logger = logger;
             _userRepository = userRepository;
+            _postRepository = postRepository;
         }
 
         public IActionResult Index()
         {
             User currentUser = _userRepository.GetUser(User.Identity.Name);
-            IndexViewModel indexViewModel = new IndexViewModel
-            {
-                UserName = currentUser.UserName,
-                PhotoPath = currentUser.PhotoPath
-            };
-            return View(indexViewModel);
+            ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
+            return View(_postRepository.GetAllPosts());
         }
 
 

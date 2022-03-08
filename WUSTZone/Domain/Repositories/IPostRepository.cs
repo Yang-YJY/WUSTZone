@@ -58,7 +58,10 @@ namespace WUSTZone.Domain.Repositories
         /// <returns></returns>
         public Post Update(Post post);
 
-
-        
+        /// <summary>
+        /// 获取全部留言（数据量小时测试使用）
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Post> GetAllPosts();
     }
 }

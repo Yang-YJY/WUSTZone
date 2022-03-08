@@ -9,6 +9,10 @@ namespace WUSTZone.Domain.Entityies
     {
         public int Id { get; set; }
 
+        [Display(Name = "标题")]
+        [Required(ErrorMessage = "标题为必填")]
+        public string Title { get; set; }
+
         [Display(Name = "用户ID")]
         public int UserId { get; set; }
 
@@ -49,6 +53,7 @@ namespace WUSTZone.Domain.Entityies
         [Display(Name = "内容")]
         public string Content { get; set; }
 
-        
+        [Required]
+        public string Condensed { get; set; }
     }
 }
