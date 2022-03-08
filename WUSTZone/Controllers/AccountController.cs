@@ -8,17 +8,18 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using WUSTZone.Domain;
+using WUSTZone.Domain.Repositories;
 using WUSTZone.Models;
 
 namespace WUSTZone.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly AppDbContext _appDbContext;
+        private readonly IUserRepository _userRepository;
 
-        public AccountController(AppDbContext appDbContext)
+        public AccountController(IUserRepository userRepository)
         {
-            _appDbContext = appDbContext;
+            _userRepository = userRepository;
         }
 
         public IActionResult Index()
@@ -40,40 +41,49 @@ namespace WUSTZone.Controllers
         /// 处理用户登录请求，登陆成功则跳转至主页面
         /// </summary>
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
+        public IActionResult Login(LoginViewModel loginViewModel)
         {
-            // 判断账号密码正确性
-            if (await _appDbContext.Users.AnyAsync(user => 
-            user.UserName == loginViewModel.UserName && user.Password == loginViewModel.Password))
+            if (ModelState.IsValid)
             {
-                // 进行登录授权
-                var claims = new List<Claim>()
+                // 判断账号密码正确性
+                var user = _userRepository.GetUser(loginViewModel.UserName, loginViewModel.Password);
+                if (user != null)
                 {
-                    // 添加用户名数据
-                    new Claim(ClaimTypes.Name, loginViewModel.UserName)
-                };
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                // 发送token给客户端，并生成cookies
-                await HttpContext
-                    .SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity),
-                    new AuthenticationProperties
+                    // 进行登录授权
+                    var claims = new List<Claim>()
                     {
-                        // 永久登录 默认两个星期
-                        IsPersistent = true
-                    });
-            }
-            else
-            {
-                // 否则返回原视图
-                return RedirectToAction("Login");
-            }
+                        // 添加用户ID
+                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                        // 添加用户名数据
+                        new Claim(ClaimTypes.Name, user.UserName)
+                    };
+                    var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-            return RedirectToAction("Index", "home");
+                    // 发送token给客户端，并生成cookies
+                    HttpContext
+                        .SignInAsync(
+                        CookieAuthenticationDefaults.AuthenticationScheme,
+                        new ClaimsPrincipal(claimsIdentity),
+                        new AuthenticationProperties
+                        {
+                            // 永久登录 默认两个星期
+                            IsPersistent = true
+                        });
+                    return RedirectToAction("Index", "home");
+                }
+            }
+            // 否则返回原视图
+            return View();
         }
 
-        // 退出用await HttpContext.SignOut
+        /// <summary>
+        /// 注销登录
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Logout()
+        {
+            HttpContext.SignOutAsync();
+            return RedirectToAction("login");
+        }
     }
 }

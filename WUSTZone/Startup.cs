@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WUSTZone.Domain;
+using WUSTZone.Domain.Repositories;
 
 namespace WUSTZone
 {
@@ -37,6 +38,9 @@ namespace WUSTZone
                 });
 
             services.AddControllersWithViews();
+
+            // ²Ö´¢·þÎñÒÀÀµ×¢Èë
+            services.AddScoped<IUserRepository, UserRepositoryDB>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

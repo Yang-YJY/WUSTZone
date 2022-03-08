@@ -15,5 +15,10 @@ namespace WUSTZone.Domain
         {
 
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            // 设置用户名唯一性约束
+            modelBuilder.Entity<User>().HasIndex(user => user.UserName).IsUnique();
+        }
     }
 }
