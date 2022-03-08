@@ -41,6 +41,7 @@ namespace WUSTZone
 
             // ²Ö´¢·şÎñÒÀÀµ×¢Èë
             services.AddScoped<IUserRepository, UserRepositoryDB>();
+            services.AddScoped<IPostRepository, PostRepositoryDB>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
