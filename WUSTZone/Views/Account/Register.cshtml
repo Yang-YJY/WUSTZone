@@ -1,0 +1,118 @@
+﻿@model RegisterViewModel
+@using WUSTZone.Domain.Enums;
+@{
+    ViewData["Title"] = "注册账号";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewData["Title"] - WUSTZone</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+    </style>
+</head>
+<body class="bg-light">
+
+    <div class="container">
+        <div class="py-5 text-center">
+            <img class="d-block mx-auto mb-4" src="/favicon.ico" alt="" width="72" height="72">
+            <h2>注册 WUST Zone 账号</h2>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 offset-3">
+                <h4 class="mb-3">填写信息</h4>
+                <form method="post" asp-controller="account" asp-action="register" enctype="multipart/form-data">
+
+                    <div class="mb-3">
+                        <label asp-for="UserName">用户名</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">@("@")</span>
+                            </div>
+                            <input type="text" class="form-control" asp-for="UserName" placeholder="以字母或下划线开头，由字母或数字或下划线组成，长度为4-16" required>
+                            <span asp-validation-for="UserName" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password">设定密码</label>
+                        <input type="password" class="form-control" asp-for="Password" placeholder="输入密码" required>
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="PasswordConform">确认密码</label>
+                        <input type="password" class="form-control" asp-for="PasswordConform" placeholder="再次输入密码" required>
+                        <span asp-validation-for="PasswordConform" class="text-danger"></span>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-md-8 mb-3">
+                            <label asp-for="College">学院</label>
+                            <select class="custom-select d-block w-100" asp-for="College" asp-items="Html.GetEnumSelectList<CollegeEnum>()" required>
+                                <option value="">选择学院</option>
+                            </select>
+                            <span asp-validation-for="College" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="Gender">性别</label>
+                            <select class="custom-select d-block w-100" asp-for="Gender" required>
+                                <option value="">选择性别</option>
+                                <option value="男">男</option>
+                                <option value="女">女</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Photo">上传头像 <span class="text-muted">(可选)</span></label>
+                        <div class="custom-file">
+                            <input asp-for="Photo" class="form-control custom-file-input" />
+                            <label class="custom-file-label">请选择照片...</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Brief">简介<span class="text-muted">(可选)</span></label>
+                        <input type="text" class="form-control" asp-for="Brief" placeholder="一句话介绍一下自己吧！">
+                    </div>
+
+                    <hr class="mb-4">
+
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">注册账号</button>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                </form>
+            </div>
+        </div>
+
+        <footer class="my-5 pt-5 text-muted text-center text-small">
+            <p class="mb-1">&copy; -2022 WUST Zone</p>
+            <a asp-controller="home" asp-action="index">返回主页</a>
+        </footer>
+    </div>
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/twitter-bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.custom-file-input').on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).next(".custom-file-label").html(fileName);
+            })
+        });
+    </script>
+</body>
+</html>

@@ -17,15 +17,17 @@
 
     <form method="post" asp-controller="Account" asp-action="Login" class="form-signin">
         <img class="mb-4" src="/favicon.ico" alt="" width="72" height="72">
-        <h1 class="h3 mb-3 font-weight-normal">请登录WUST Zone</h1>
+        <h1 class="h3 mb-3 font-weight-normal">请登录 WUST Zone</h1>
 
         <label asp-for="UserName" class="sr-only">用户名</label>
-        <input asp-for="UserName" class="form-control" placeholder="用户名" autofocus />
+        <input asp-for="UserName" class="form-control" placeholder="用户名" autofocus required />
 
         <label asp-for="Password" class="sr-only">密码</label>
-        <input type="password" asp-for="Password" class="form-control" placeholder="密码" />
+        <input type="password" asp-for="Password" class="form-control" placeholder="密码" required />
 
         <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+
+        <a asp-controller="Account" asp-action="Register">没有账号？点此注册</a>
         <div asp-validation-summary="All" class="text-danger text-left"></div>
         <p class="mt-5 mb-3 text-muted">&copy; WUSTZone - 2022</p>
     </form>

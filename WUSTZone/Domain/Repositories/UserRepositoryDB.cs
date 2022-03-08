@@ -19,6 +19,13 @@ namespace WUSTZone.Domain.Repositories
             this.context = context;
         }
 
+        public User AddUser(User newUser)
+        {
+            context.Users.Add(newUser);
+            context.SaveChanges();
+            return newUser;
+        }
+
         public User GetUser(int id)
         {
             return context.Users.Find(id);
