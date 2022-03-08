@@ -11,6 +11,8 @@ namespace WUSTZone.Domain
     {
         public DbSet<User> Users { get; set; }
 
+        public DbSet<Post> Posts { get; set; }
+
         public AppDbContext(DbContextOptions options): base(options)
         {
 
