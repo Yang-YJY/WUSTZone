@@ -21,6 +21,8 @@ namespace WUSTZone.Domain
         {
             // 设置用户名唯一性约束
             modelBuilder.Entity<User>().HasIndex(user => user.UserName).IsUnique();
+            // 设置时间戳
+            modelBuilder.Entity<Post>().Property(post => post.TimeStamp).HasDefaultValueSql("CURRENT_TIMESTAMP");
         }
     }
 }
