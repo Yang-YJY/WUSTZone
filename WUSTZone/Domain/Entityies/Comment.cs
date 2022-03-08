@@ -23,6 +23,7 @@ namespace WUSTZone.Domain.Entityies
         [Display(Name ="评论创建时间")]
         public DateTime TimeStamp { get; set; }
 
+
         [Display(Name ="评论内容")]
         public string Content { get; set; }
     }

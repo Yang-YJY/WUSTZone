@@ -1,6 +1,91 @@
-﻿@model WUSTZone.Domain.Entityies.Post
+﻿@using WUSTZone.Domain.Enums
+@model PostViewModel
 @{
     ViewData["Title"] = "发布留言";
 }
 
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewData["Title"] - WUSTZone</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+    </style>
+</head>
+<body class="bg-light">
 
+    <div class="container">
+        <div class="py-5 text-center">
+            <img class="d-block mx-auto mb-4" src="/favicon.ico" alt="" width="72" height="72">
+            <h2>发布留言</h2>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 offset-3">
+                <h4 class="mb-3">填写信息</h4>
+                <form method="post" asp-controller="post" asp-action="add" enctype="multipart/form-data">
+
+
+                    <div class="row">
+                        <label asp-for="Category">类型</label>
+                        <select class="custom-select d-block w-100" asp-for="Category" asp-items="Html.GetEnumSelectList<PostEnum>()" required>
+                            <option value="">选择留言类型</option>
+                        </select>
+                        <span asp-validation-for="Category" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Content">简介<span class="text-muted">(必填)</span></label>
+                        <input type="text" class="form-control" asp-for="Content" placeholder="说点什么吧！">
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Photos">上传图片 <span class="text-muted">(可选)</span></label>
+                        <div class="custom-file">
+                            <input asp-for="Photos" multiple class="form-control custom-file-input" />
+                            <label class="custom-file-label">请选择照片...</label>
+                        </div>
+                    </div>
+
+                    <hr class="mb-4">
+
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">发布留言</button>
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                </form>
+            </div>
+        </div>
+
+        <footer class="my-5 pt-5 text-muted text-center text-small">
+            <p class="mb-1">&copy; -2022 WUST Zone</p>
+            <a asp-controller="home" asp-action="index">返回主页</a>
+        </footer>
+    </div>
+    <script src="~/lib/jquery/jquery.js"></script>
+    <script src="~/lib/twitter-bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.custom-file-input').on("change", function () {
+                var fileLable = $(this).next('.custom-file-lable');
+                var files = $(this)[0].files;
+                if(files.length > 1){
+                    fileLable.html('您已经选择了：'+ files.length + ' 个文件');
+                }else if(files.length == 1){
+                    fileLable.html(files[0].name);
+                }
+            });
+        });
+    </script>
+
+    
+</body>
+</html>

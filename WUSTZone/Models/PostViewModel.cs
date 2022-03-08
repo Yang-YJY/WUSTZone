@@ -4,17 +4,18 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using WUSTZone.Domain.Enums;
 
-namespace WUSTZone.Domain.Entityies
+namespace WUSTZone.Models
 {
-    public class Post
+    public class PostViewModel
     {
-        public int Id { get; set; }
-
         [Display(Name = "用户ID")]
+
+
+        public string UserName { get; set; }
         public int UserId { get; set; }
 
-        [Display(Name ="创建时间")]
-        public DateTime  TimeStamp { get; set; }
+        [Display(Name = "创建时间")]
+        public DateTime TimeStamp { get; set; }
 
         /// <summary>
         /// "0": 默认类别
@@ -22,9 +23,9 @@ namespace WUSTZone.Domain.Entityies
         /// "2": 求助
         /// "3": 树洞
         /// </summary>
-        [Required]
+        [Required(ErrorMessage ="请选择留言类别")]
         [Display(Name = "留言类别")]
-        public string Category { get; set; }
+        public PostEnum Category { get; set; }
 
         [Display(Name = "点赞数")]
         public int LikeCount { get; set; }
@@ -53,7 +54,6 @@ namespace WUSTZone.Domain.Entityies
         /// <summary>
         /// 将上传的图片路径转为json对象再转为字符串后存入数据库
         /// </summary>
-        public string Photo { get; set; }
-        
+        public List<IFormFile> Photos { get; set; }
     }
 }
