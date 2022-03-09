@@ -139,17 +139,42 @@ namespace WUSTZone.Controllers
                 model.Add(new IndexViewModel
                 {
                     Title = post.Title,
-                    UserName = _userRepository.GetUser(post.UserId).UserName,
+                    //UserName = _userRepository.GetUser(post.UserId).UserName,
+                    //测试正常，UserName暂时定死，等有正式数据在改，不然会出现用户找不到的情况，
+                    UserName = "GM",
                     TimeStamp = post.TimeStamp,
-                    Category = post.Category.GetString(),
+                    Category = CategoryEnumExtensions.GetString(post.Category),
                     LikeCount = post.LikeCount,
                     CommentCount = post.CommentCount,
                     IsPinned = post.IsPinned,
                     IsSelected = post.IsSelected,
-                    Condensed = post.Condensed
+                    Condensed = post.Condensed,
+                    PostId = post.Id
                 });
             }
             return model;
         }
+
+
+
+        public IActionResult MySpace(int?pageIndex)
+        {
+
+            User currentUser = _userRepository.GetUser(User.Identity.Name);
+            ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
+
+            if (pageIndex == null)
+            {
+                pageIndex = 1;
+            }
+            //每一页大小
+            int pageSize = 10;
+            IEnumerable<Post> postList = null;
+            postList = _postRepository.GetPostsByUserId(currentUser.Id);
+            //分页，类似java 的subList操作
+            List<Post> subList = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
+            return View(trasfer(subList));
+        }
+
     }
 }
