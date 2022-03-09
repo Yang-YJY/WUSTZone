@@ -11,11 +11,6 @@ namespace WUSTZone.Models
     {
         public int Id { get; set; }
 
-        [Display(Name = "用户名")]
-        [Required(ErrorMessage = "请输入用户名")]
-        [RegularExpression(@"^[a-zA-Z_][a-zA-Z0-9_]{3,15}$", ErrorMessage = "以字母或下划线开头，由字母或数字或下划线组成，长度为4-16")]
-        public string UserName { get; set; }
-
         [Display(Name = "性别")]
         [Required(ErrorMessage = "请选择性别")]
         [MaxLength(2)]

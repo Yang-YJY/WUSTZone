@@ -156,7 +156,6 @@ namespace WUSTZone.Controllers
             AccountEditViewModel model = new AccountEditViewModel
             {
                 Id = currentUser.Id,
-                UserName = currentUser.UserName,
                 Gender = currentUser.Gender,
                 ExistingPhotoPath = currentUser.PhotoPath,
                 College = currentUser.College,
@@ -172,7 +171,6 @@ namespace WUSTZone.Controllers
             if (ModelState.IsValid)
             {
                 User user = _userRepository.GetUser(model.Id);
-                user.UserName = model.UserName;
                 user.College = model.College;
                 user.Gender = model.Gender;
                 user.Brief = model.Brief;

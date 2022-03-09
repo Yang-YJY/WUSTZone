@@ -1,7 +1,7 @@
 ﻿@model AccountEditViewModel
 @using WUSTZone.Domain.Enums
 @{
-    ViewData["Title"] = "修改个人信息";
+    ViewData["Title"] = "个人信息";
 }
 
 <div class="container bg-white rounded">
@@ -15,9 +15,8 @@
                 <br />
                 <div class="row">
                     <div class="col-md-4 mb-3">
-                        <label asp-for="UserName">用户名</label>
-                        <input type="text" class="form-control" asp-for="UserName" value="@Model.UserName" required>
-                        <span asp-validation-for="UserName" class="text-danger"></span>
+                        <label >用户名</label>
+                        <input type="text" class="form-control" value="@User.Identity.Name" disabled>
                     </div>
                     <div class="col-md-5 mb-3">
                         <label asp-for="College">学院</label>
@@ -26,11 +25,11 @@
                             {
                                 if (c.GetString() == Model.College)
                                 {
-                                    <option value="c" selected>@c.GetString()</option>
+                                    <option value="@c.GetString()" selected>@c.GetString()</option>
                                 }
                                 else
                                 {
-                                    <option value="c">@c.GetString()</option>
+                                    <option value="@c.GetString()">@c.GetString()</option>
                                 }
                             }
                         </select>
