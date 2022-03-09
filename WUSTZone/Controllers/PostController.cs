@@ -73,7 +73,7 @@ namespace WUSTZone.Controllers
                 {
                     UserId = _userRepository.GetUser(User.Identity.Name).Id,
                     Title = postViewModel.Title,
-                    Category = postViewModel.Category,
+                    Category = (CategoryEnum)postViewModel.Category,
                     Content = postViewModel.Content,
                     Photo = photoNameCSV,
                     Condensed = postViewModel.Content.Substring(0, Math.Min(postViewModel.Content.Length - 1, 100)),

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using WUSTZone.Domain.Enums;
 
 namespace WUSTZone.Models
 {
@@ -14,7 +15,7 @@ namespace WUSTZone.Models
         /// </summary>
         [Required(ErrorMessage ="请选择留言类别")]
         [Display(Name = "留言类别")]
-        public int Category { get; set; }
+        public CategoryEnum? Category { get; set; }
 
         [Required(ErrorMessage ="请输入标题")]
         [Display(Name ="标题")]

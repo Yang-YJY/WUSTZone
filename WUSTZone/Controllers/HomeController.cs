@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using WUSTZone.Domain.Entityies;
+using WUSTZone.Domain.Enums;
 using WUSTZone.Domain.Repositories;
 using WUSTZone.Models;
 
@@ -63,8 +64,7 @@ namespace WUSTZone.Controllers
             postList = _postRepository.GetAllPosts();
             //分页，类似java 的subList操作
             List<Post> subList = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
-            List<IndexViewModel> ansList = getAnsList(subList);
-            return View(ansList);
+            return View(trasfer(subList));
 
         }
 
@@ -79,11 +79,10 @@ namespace WUSTZone.Controllers
                 pageIndex = 1;
             }
             IEnumerable<Post> postList = null;
-            postList = _postRepository.GetPostsByCategory(1);
+            postList = _postRepository.GetPostsByCategory(CategoryEnum.Gossip);
             //分页，类似java 的subList操作
             List<Post> subList = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
-            List<IndexViewModel> ansList = getAnsList(subList);
-            return View(ansList);
+            return View(trasfer(subList));
 
         }
 
@@ -99,11 +98,10 @@ namespace WUSTZone.Controllers
                 pageIndex = 1;
             }
             IEnumerable<Post> postList = null;
-            postList = _postRepository.GetPostsByCategory(2);
+            postList = _postRepository.GetPostsByCategory(CategoryEnum.SeekHelp);
             //分页，类似java 的subList操作
             List<Post> subList = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
-            List<IndexViewModel> ansList = getAnsList(subList);
-            return View(ansList);
+            return View(trasfer(subList));
 
         }
 
@@ -118,11 +116,10 @@ namespace WUSTZone.Controllers
                 pageIndex = 1;
             }
             IEnumerable<Post> postList = null;
-            postList = _postRepository.GetPostsByCategory(3);
+            postList = _postRepository.GetPostsByCategory(CategoryEnum.TreeHole);
             //分页，类似java 的subList操作
             List<Post> subList = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
-            List<IndexViewModel> ansList = getAnsList(subList);
-            return View(ansList);
+            return View(trasfer(subList));
 
         }
 
@@ -141,8 +138,7 @@ namespace WUSTZone.Controllers
             postList = _postRepository.GetPostsBySelected();
             //分页，类似java 的subList操作
             List<Post> subList = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
-            List<IndexViewModel> ansList = getAnsList(subList);
-            return View(ansList);
+            return View(trasfer(subList));
 
         }
 
@@ -151,6 +147,28 @@ namespace WUSTZone.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        private List<IndexViewModel> trasfer(List<Post> posts)
+        {
+            // 转换为IndexViewModel
+            List<IndexViewModel> model = new List<IndexViewModel>();
+            foreach (var post in posts)
+            {
+                model.Add(new IndexViewModel
+                {
+                    Title = post.Title,
+                    UserName = _userRepository.GetUser(post.UserId).UserName,
+                    TimeStamp = post.TimeStamp,
+                    Category = post.Category.GetString(),
+                    LikeCount = post.LikeCount,
+                    CommentCount = post.CommentCount,
+                    IsPinned = post.IsPinned,
+                    IsSelected = post.IsSelected,
+                    Condensed = post.Condensed
+                });
+            }
+            return model;
         }
     }
 }

@@ -9,19 +9,19 @@
 <br />
 <ul class="nav nav-pills bg-light">
     <li class="nav-item">
-        <a class="nav-link active"  asp-controller="Home" asp-action="Index">全部留言</a>
+        <a class="nav-link active" asp-controller="Home" asp-action="Index">全部留言</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link"  asp-controller="Home" asp-action="Selected">精选留言</a>
+        <a class="nav-link" asp-controller="Home" asp-action="Selected">精选留言</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link"  asp-controller="Home" asp-action="Gossip">闲聊</a>
+        <a class="nav-link" asp-controller="Home" asp-action="Gossip">闲聊</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link"  asp-controller="Home" asp-action="SeekHelp">求助</a>
+        <a class="nav-link" asp-controller="Home" asp-action="SeekHelp">求助</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link"  asp-controller="Home" asp-action="TreeHole">树洞</a>
+        <a class="nav-link" asp-controller="Home" asp-action="TreeHole">树洞</a>
     </li>
 </ul>
 
@@ -31,7 +31,22 @@
     <br />
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">@post.Title &nbsp; </h4>
+            <h4 class="card-title">
+                @post.Title &nbsp;
+                <small>
+                    @switch (post.Category)
+                    {
+                        case "闲聊":<span class="badge badge-primary">闲聊</span> break;
+                        case "求助": <span class="badge badge-danger">求助</span>break;
+                        case "树洞": <span class="badge badge-success">树洞</span>break;
+                        case "默认": <span class="badge badge-secondary">默认</span>break;
+                    }
+                    @if (post.IsSelected)
+                    {
+                        <span class="badge badge-warning">精选</span>
+                    }
+                </small>
+            </h4>
             <p class="card-text">@post.Condensed...</p>
             <div>
                 <a href="#" class="card-link">点赞(@post.LikeCount)</a>

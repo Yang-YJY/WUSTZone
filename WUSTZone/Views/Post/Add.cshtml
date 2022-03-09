@@ -1,4 +1,5 @@
 ﻿@model PostViewModel
+@using WUSTZone.Domain.Enums;
 @{
     ViewData["Title"] = "发布留言";
 }
@@ -16,11 +17,8 @@
                 </div>
                 <div class="col-md-3 mb-3">
                     <label asp-for="Category">类别</label>
-                    <select class="custom-select d-block w-100" asp-for="Category" required>
+                    <select class="custom-select d-block w-100" asp-for="Category" asp-items="@Html.GetEnumSelectList<CategoryEnum>()" required>
                         <option value="">选择类别</option>
-                        <option value="1">闲聊</option>
-                        <option value="2">求助</option>
-                        <option value="3">树洞</option>
                     </select>
                 </div>
             </div>
