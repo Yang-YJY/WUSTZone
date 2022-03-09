@@ -63,14 +63,14 @@
                 <h3 class="mb-3">用户头像</h3>
                 <br />
                 <div class=" row justify-content-center">
-                    <div class="mb-3" style="width:200px;height:200px">
-                        <img src="@ViewData["UserPhotoPath"]" style="width:auto;height:100%" />
+                    <div class="mb-3" style="width: 200px; height: 200px; overflow: hidden">
+                        <img id="img" src="@ViewData["UserPhotoPath"]" style="width:auto;height:100%" />
                     </div>
                 </div>
                 <div class="mb-3">
                     <label asp-for="Photo">头像<span class="text-muted">(可选)</span></label>
                     <div class="custom-file">
-                        <input asp-for="Photo" class="form-control custom-file-input" />
+                        <input asp-for="Photo" class="form-control custom-file-input" onchange="show(this)" />
                         <label class="custom-file-label">请选择照片...</label>
                     </div>
                 </div>
@@ -90,5 +90,17 @@
                 $(this).next(".custom-file-label").html(fileName);
             })
         });
+        function show(file) {
+            var reader = new FileReader();	// 实例化一个FileReader对象，用于读取文件
+            var img = document.getElementById('img'); 	// 获取要显示图片的标签
+
+            //读取File对象的数据
+            reader.onload = function (evt) {
+                img.width = "200";
+                img.height = "200";
+                img.src = evt.target.result;
+            }
+            reader.readAsDataURL(file.files[0]);
+        }
     </script>
 }
