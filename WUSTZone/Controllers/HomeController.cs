@@ -21,12 +21,14 @@ namespace WUSTZone.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IUserRepository _userRepository;
         private readonly IPostRepository _postRepository;
+        private readonly int _pageSize;
 
         public HomeController(ILogger<HomeController> logger, IUserRepository userRepository, IPostRepository postRepository)
         {
             _logger = logger;
             _userRepository = userRepository;
             _postRepository = postRepository;
+            _pageSize = 2;
         }
 
 
@@ -34,35 +36,18 @@ namespace WUSTZone.Controllers
         {
             User currentUser = _userRepository.GetUser(User.Identity.Name);
             ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
-
-            if (pageIndex == null)
-            {
-                pageIndex = 1;
-            }
-            //每一页大小
-            int pageSize = 10;
-            IEnumerable<Post> postList = null;
-            postList = _postRepository.GetAllPosts();
-            //分页，类似java 的subList操作
-            List<Post> subList = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
+            ViewBag.PageCount = GetPosts(_pageSize, pageIndex ?? 1, false, null, out var subList , out int currentIndex);
+            ViewBag.CurrentIndex = currentIndex;
             return View(trasfer(subList));
-
         }
 
-        public IActionResult Gossip(int? pageIndex) 
+
+        public IActionResult Gossip(int? pageIndex)
         {
             User currentUser = _userRepository.GetUser(User.Identity.Name);
             ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
-            //每一页大小
-            int pageSize = 10;
-            if(pageIndex == null)
-            {
-                pageIndex = 1;
-            }
-            IEnumerable<Post> postList = null;
-            postList = _postRepository.GetPostsByCategory(CategoryEnum.Gossip);
-            //分页，类似java 的subList操作
-            List<Post> subList = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
+            ViewBag.PageCount = GetPosts(_pageSize, pageIndex ?? 1, false, CategoryEnum.Gossip, out var subList, out int currentIndex);
+            ViewBag.CurrentIndex = currentIndex;
             return View(trasfer(subList));
 
         }
@@ -72,16 +57,8 @@ namespace WUSTZone.Controllers
         {
             User currentUser = _userRepository.GetUser(User.Identity.Name);
             ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
-            //每一页大小
-            int pageSize = 10;
-            if (pageIndex == null)
-            {
-                pageIndex = 1;
-            }
-            IEnumerable<Post> postList = null;
-            postList = _postRepository.GetPostsByCategory(CategoryEnum.SeekHelp);
-            //分页，类似java 的subList操作
-            List<Post> subList = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
+            ViewBag.PageCount = GetPosts(_pageSize, pageIndex ?? 1, false, CategoryEnum.SeekHelp, out var subList, out int currentIndex);
+            ViewBag.CurrentIndex = currentIndex;
             return View(trasfer(subList));
 
         }
@@ -90,16 +67,8 @@ namespace WUSTZone.Controllers
         {
             User currentUser = _userRepository.GetUser(User.Identity.Name);
             ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
-            //每一页大小
-            int pageSize = 10;
-            if (pageIndex == null)
-            {
-                pageIndex = 1;
-            }
-            IEnumerable<Post> postList = null;
-            postList = _postRepository.GetPostsByCategory(CategoryEnum.TreeHole);
-            //分页，类似java 的subList操作
-            List<Post> subList = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
+            ViewBag.PageCount = GetPosts(_pageSize, pageIndex ?? 1, false, CategoryEnum.TreeHole, out var subList, out int currentIndex);
+            ViewBag.CurrentIndex = currentIndex;
             return View(trasfer(subList));
 
         }
@@ -109,16 +78,8 @@ namespace WUSTZone.Controllers
         {
             User currentUser = _userRepository.GetUser(User.Identity.Name);
             ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
-            //每一页大小
-            int pageSize = 10;
-            if (pageIndex == null)
-            {
-                pageIndex = 1;
-            }
-            IEnumerable<Post> postList = null;
-            postList = _postRepository.GetPostsBySelected();
-            //分页，类似java 的subList操作
-            List<Post> subList = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
+            ViewBag.PageCount = GetPosts(_pageSize, pageIndex ?? 1, true, null, out var subList, out int currentIndex);
+            ViewBag.CurrentIndex = currentIndex;
             return View(trasfer(subList));
 
         }
@@ -128,6 +89,45 @@ namespace WUSTZone.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+
+        /// <summary>
+        /// 获取分页
+        /// </summary>
+        /// <param name="pageSize"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="posts"></param>
+        /// <param name="category"></param>
+        /// <returns>返回页面数量</returns>
+        private int GetPosts(int pageSize, int pageIndex, bool selected, CategoryEnum? category, out List<Post> posts, out int currentIndex)
+        {
+            IEnumerable<Post> postList = null;
+            if (selected)
+            {
+                postList = _postRepository.GetPostsBySelected();
+            }
+            else if (category == null)
+            {
+                postList = _postRepository.GetAllPosts();
+            }
+            else {
+                switch (category)
+                {
+                    case CategoryEnum.Gossip: postList = _postRepository.GetPostsByCategory(CategoryEnum.Gossip); break;
+                    case CategoryEnum.SeekHelp: postList = _postRepository.GetPostsByCategory(CategoryEnum.SeekHelp); break;
+                    case CategoryEnum.TreeHole: postList = _postRepository.GetPostsByCategory(CategoryEnum.TreeHole); break;
+                } 
+            }
+            // 总页数
+            int pageCount = (int)Math.Ceiling((double)postList.Count() / pageSize);
+            pageIndex = pageIndex >= pageCount ? pageCount : pageIndex;
+            currentIndex = pageIndex;
+
+            //分页，类似java 的subList操作
+            posts = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
+
+            return pageCount;
         }
 
         private List<IndexViewModel> trasfer(List<Post> posts)
