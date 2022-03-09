@@ -27,5 +27,8 @@ namespace WUSTZone.Models
         public bool IsSelected { get; set; }
 
         public string Condensed { get; set; }
+
+
+        public int PostId { get; set; }
     }
 }

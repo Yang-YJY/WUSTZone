@@ -87,5 +87,13 @@ namespace WUSTZone.Controllers
             }
             return View();
         }
+
+
+        public IActionResult Delete(int id)
+        {
+            _postRepository.Delete(id);
+            return RedirectToAction("myspace", "home");
+        }
+
     }
 }

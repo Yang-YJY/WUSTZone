@@ -38,5 +38,14 @@ namespace WUSTZone.Models
 
         [Display(Name = "简介")]
         public string Brief { get; set; }
+
+
+        //用于回显数据
+
+        [Display(Name = "头像路径")]
+        public string PhotoPath { get; set; }
+
+        [Display(Name ="学院名")]
+        public string ColleageStr { get; set; }
     }
 }
