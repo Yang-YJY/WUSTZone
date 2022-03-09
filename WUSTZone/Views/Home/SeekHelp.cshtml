@@ -1,27 +1,27 @@
-﻿@model List<WUSTZone.Domain.Entityies.Post>
+﻿@model List<IndexViewModel>
 @{
-    ViewData["Title"] = "闲聊";
+    ViewData["Title"] = "求助";
 }
 
 <div class="text-center">
-    <h1 class="display-4">欢迎来到 WUST Zone</h1>
+    <h1 class="display-4">欢迎来到 WUST Zone —— 求助</h1>
 </div>
 <br />
 <ul class="nav nav-pills bg-light">
     <li class="nav-item">
-        <a class="nav-link " data-toggle="pill" asp-controller="Home" asp-action="Index">全部留言</a>
+        <a class="nav-link " asp-controller="Home" asp-action="Index">全部留言</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" data-toggle="pill" asp-controller="Home" asp-action="Selected">精选留言</a>
+        <a class="nav-link" asp-controller="Home" asp-action="Selected">精选留言</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link " data-toggle="pill" asp-controller="home" asp-action="Gossip">闲聊</a>
+        <a class="nav-link " asp-controller="home" asp-action="Gossip">闲聊</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link active" data-toggle="pill" asp-controller="Home" asp-action="SeekHelp">求助</a>
+        <a class="nav-link active" asp-controller="Home" asp-action="SeekHelp">求助</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" data-toggle="pill" asp-controller="Home" asp-action="TreeHole">树洞</a>
+        <a class="nav-link" asp-controller="Home" asp-action="TreeHole">树洞</a>
     </li>
 </ul>
 

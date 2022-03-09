@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using WUSTZone.Domain.Entityies;
+using WUSTZone.Domain.Enums;
 
 namespace WUSTZone.Domain.Repositories
 {
@@ -44,7 +45,7 @@ namespace WUSTZone.Domain.Repositories
                     .ToList();   
         }
 
-        public List<Post> GetPostsByCategory(int category)
+        public List<Post> GetPostsByCategory(CategoryEnum category)
         {
             return context.Posts
                     .Where(Post => Post.Category == category)

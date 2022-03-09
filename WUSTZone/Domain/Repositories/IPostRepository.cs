@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using WUSTZone.Domain.Entityies;
+using WUSTZone.Domain.Enums;
 
 namespace WUSTZone.Domain.Repositories
 {
@@ -42,7 +43,7 @@ namespace WUSTZone.Domain.Repositories
         /// </summary>
         /// <param name="category"></param>
         /// <returns>Post类实体集合</returns>
-        public List<Post> GetPostsByCategory(int category);
+        public List<Post> GetPostsByCategory(CategoryEnum category);
 
         /// <summary>
         /// 获取精选的留言集合
