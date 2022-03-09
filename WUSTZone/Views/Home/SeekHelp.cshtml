@@ -33,8 +33,45 @@
         <div class="card-body">
             <h4 class="card-title">@post.Title</h4>
             <p class="card-text">@post.Condensed...</p>
-            <a href="#" class="card-link">点赞(@post.LikeCount)</a>
-            <a href="#" class="card-link">评论(@post.CommentCount)</a>
+            <div>
+                <a href="#" class="card-link">点赞(@post.LikeCount)</a>
+                <a href="#" class="card-link">评论(@post.CommentCount)</a>
+                <span class="small text-right text-muted" style="float:right">由 @post.UserName 发布于 @post.TimeStamp</span>
+            </div>
         </div>
     </div>
 }
+
+@* 分页 *@
+<br />
+<div class="container">
+    <ul class="pagination justify-content-center">
+        @if (ViewBag.CurrentIndex == 1)
+        {
+            <li class="page-item disabled"><a class="page-link">上一页</a></li>
+        }
+        else
+        {
+            <li class="page-item"><a class="page-link" asp-controller="home" asp-action="seekhelp" asp-route-pageIndex="@(ViewBag.CurrentIndex - 1)">上一页</a></li>
+        }
+        @for (int i = 1; i <= ViewBag.PageCount; i++)
+        {
+            if (i == ViewBag.CurrentIndex)
+            {
+                <li class="page-item active"><a class="page-link" asp-controller="home" asp-action="seekhelp" asp-route-pageIndex="@i">@i</a></li>
+            }
+            else
+            {
+                <li class="page-item"><a class="page-link" asp-controller="home" asp-action="seekhelp" asp-route-pageIndex="@i">@i</a></li>
+            }
+        }
+        @if (ViewBag.CurrentIndex == ViewBag.PageCount)
+        {
+            <li class="page-item disabled"><a class="page-link">下一页</a></li>
+        }
+        else
+        {
+            <li class="page-item"><a class="page-link" asp-controller="home" asp-action="seekhelp" asp-route-pageIndex="@(ViewBag.CurrentIndex + 1)">下一页</a></li>
+        }
+    </ul>
+</div>
