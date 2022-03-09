@@ -44,5 +44,13 @@ namespace WUSTZone.Domain.Repositories
                 .Where(user => user.UserName == userName && user.Password == password)
                 .FirstOrDefault();
         }
+
+        public User UpdateUser(User user)
+        {
+            var updatedUser = context.Users.Attach(user);
+            updatedUser.State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            context.SaveChanges();
+            return user;
+        }
     }
 }

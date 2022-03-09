@@ -143,5 +143,67 @@ namespace WUSTZone.Controllers
             }
             return View();
         }
+
+        /// <summary>
+        /// 修改个人信息页面
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ViewResult Edit()
+        {
+            User currentUser = _userRepository.GetUser(User.Identity.Name);
+            ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
+            AccountEditViewModel model = new AccountEditViewModel
+            {
+                Id = currentUser.Id,
+                UserName = currentUser.UserName,
+                Gender = currentUser.Gender,
+                ExistingPhotoPath = currentUser.PhotoPath,
+                College = currentUser.College,
+                Brief = currentUser.Brief
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(AccountEditViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = _userRepository.GetUser(model.Id);
+                user.UserName = model.UserName;
+                user.College = model.College;
+                user.Gender = model.Gender;
+                user.Brief = model.Brief;
+
+                // 头像上传
+                if (model.Photo != null)
+                {
+                    string filePath = null;
+                    // 判断是否上传了图片
+                    if (model.ExistingPhotoPath != null)
+                    {
+                        // 删除老照片
+                        filePath = Path.Combine(webHostEnvironment.WebRootPath, "uploads", "user_photo", model.ExistingPhotoPath);
+                        System.IO.File.Delete(filePath);
+                    }
+                    // 上传新头像
+                    string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "uploads", "user_photo");
+                    string uniqueFileName = Guid.NewGuid().ToString() + "_" + model.Photo.FileName;
+                    filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        // 流转换为文件存入文件夹
+                        model.Photo.CopyTo(fileStream);
+                    }
+                    user.PhotoPath = uniqueFileName;
+                }
+
+                User updatedUser = _userRepository.UpdateUser(user);
+                return RedirectToAction("index", "home");
+            }
+            return View();
+        }
     }
 }

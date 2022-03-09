@@ -39,7 +39,7 @@
                         case "闲聊":<span class="badge badge-primary">闲聊</span> break;
                         case "求助": <span class="badge badge-danger">求助</span>break;
                         case "树洞": <span class="badge badge-success">树洞</span>break;
-                        case "默认": <span class="badge badge-secondary">默认</span>break;
+                        default: <span class="badge badge-secondary">默认</span>break;
                     }
                     @if (post.IsSelected)
                     {
@@ -51,7 +51,14 @@
             <div>
                 <a href="#" class="card-link">点赞(@post.LikeCount)</a>
                 <a href="#" class="card-link">评论(@post.CommentCount)</a>
-                <span class="small text-right text-muted" style="float:right">由 @post.UserName 发布于 @post.TimeStamp</span>
+                <span class="small text-right text-muted" style="float:right">
+                    @if (post.Category != "树洞")
+                    {
+
+                        @("由 ") @post.UserName
+                    }
+                    发布于 @post.TimeStamp
+                </span>
             </div>
         </div>
     </div>
@@ -73,7 +80,7 @@
         {
             if (i == ViewBag.CurrentIndex)
             {
-                <li class="page-item active"><a class="page-link"asp-controller="home" asp-action="index" asp-route-pageIndex="@i">@i</a></li>
+                <li class="page-item active"><a class="page-link">@i</a></li>
             }
             else
             {

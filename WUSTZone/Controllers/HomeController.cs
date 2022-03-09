@@ -28,7 +28,7 @@ namespace WUSTZone.Controllers
             _logger = logger;
             _userRepository = userRepository;
             _postRepository = postRepository;
-            _pageSize = 2;
+            _pageSize = 10;
         }
 
 

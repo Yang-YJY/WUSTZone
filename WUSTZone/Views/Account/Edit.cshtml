@@ -1,0 +1,95 @@
+﻿@model AccountEditViewModel
+@using WUSTZone.Domain.Enums
+@{
+    ViewData["Title"] = "修改个人信息";
+}
+
+<div class="container bg-white rounded">
+    <div class="row">
+        <div class="col-md-8 offset-2">
+            <form method="post" asp-controller="account" asp-action="edit" enctype="multipart/form-data">
+                <input hidden asp-for="Id" />
+                <input hidden asp-for="ExistingPhotoPath" />
+                <br />
+                <h3 class="mb-3">个人信息</h3>
+                <br />
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label asp-for="UserName">用户名</label>
+                        <input type="text" class="form-control" asp-for="UserName" value="@Model.UserName" required>
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-5 mb-3">
+                        <label asp-for="College">学院</label>
+                        <select asp-for="College" class="form-control">
+                            @foreach (CollegeEnum c in Enum.GetValues(typeof(CollegeEnum)))
+                            {
+                                if (c.GetString() == Model.College)
+                                {
+                                    <option value="c" selected>@c.GetString()</option>
+                                }
+                                else
+                                {
+                                    <option value="c">@c.GetString()</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="College" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label asp-for="Gender">性别</label>
+                        <select class="custom-select d-block w-100" asp-for="Gender" required>
+                            @if (Model.Gender == "男")
+                            {
+                                <option value="男">男</option>
+                                <option value="女">女</option>
+                            }
+                            else
+                            {
+                                <option value="女">女</option>
+                                <option value="男">男</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="Brief">简介<span class="text-muted">(可选)</span></label>
+                    <input type="text" class="form-control" asp-for="Brief" value="@Model.Brief">
+                </div>
+
+                <hr class="mb-4">
+
+                <br />
+                <h3 class="mb-3">用户头像</h3>
+                <br />
+                <div class=" row justify-content-center">
+                    <div class="mb-3" style="width:200px;height:200px">
+                        <img src="@ViewData["UserPhotoPath"]" style="width:auto;height:100%" />
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Photo">头像<span class="text-muted">(可选)</span></label>
+                    <div class="custom-file">
+                        <input asp-for="Photo" class="form-control custom-file-input" />
+                        <label class="custom-file-label">请选择照片...</label>
+                    </div>
+                </div>
+
+                <hr class="mb-4" />
+                <button class="btn btn-primary btn-lg btn-block" type="submit">修改</button>
+                <div asp-validation-summary="All" class="text-danger"></div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.custom-file-input').on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).next(".custom-file-label").html(fileName);
+            })
+        });
+    </script>
+}

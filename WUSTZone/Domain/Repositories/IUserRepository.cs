@@ -32,5 +32,11 @@ namespace WUSTZone.Domain.Repositories
         /// <param name="newUser"></param>
         /// <returns>新添加的用户实体</returns>
         public User AddUser(User newUser);
+        /// <summary>
+        /// 更新用户
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns>更新后的用户实体</returns>
+        public User UpdateUser(User user);
     }
 }
