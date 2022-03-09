@@ -13,7 +13,7 @@ namespace WUSTZone.Domain
                     Id = 1001,
                     UserId = 1,
                     TimeStamp = System.DateTime.Now,
-                    Category = "树洞",
+                    Category = 1,
                     LikeCount = 0,
                     CommentCount = 0,
                     IsPinned = false,
@@ -28,7 +28,7 @@ namespace WUSTZone.Domain
                 {
                     Id = 1002,
                     TimeStamp = System.DateTime.Now,
-                    Category = "求助",
+                    Category = 1,
                     LikeCount = 0,
                     CommentCount = 0,
                     IsPinned = false,
@@ -36,14 +36,14 @@ namespace WUSTZone.Domain
                     Content = "郭森泽一号",
                     Photo = "",
                     Condensed = "",
-                    Title = ""
+                    Title = "哈哈哈哈哈"
 
                 },
                 new Post
                 {
                     Id = 1003,
                     TimeStamp = System.DateTime.Now,
-                    Category = "闲聊",
+                    Category = 3,
                     LikeCount = 0,
                     CommentCount = 0,
                     IsPinned = false,
@@ -58,7 +58,7 @@ namespace WUSTZone.Domain
                 {
                     Id = 1004,
                     TimeStamp = System.DateTime.Now,
-                    Category = "默认类型",
+                    Category = 1,
                     LikeCount = 0,
                     CommentCount = 0,
                     IsPinned = false,
@@ -66,7 +66,22 @@ namespace WUSTZone.Domain
                     Content = "郭森泽四号",
                     Photo = "",
                     Condensed = "",
-                    Title = ""
+                    Title = "哈哈哈哈哈"
+
+                },
+                new Post
+                {
+                    Id = 1004,
+                    TimeStamp = System.DateTime.Now,
+                    Category = 1,
+                    LikeCount = 0,
+                    CommentCount = 0,
+                    IsPinned = false,
+                    IsSelected = false,
+                    Content = "郭森泽五号",
+                    Photo = "",
+                    Condensed = "",
+                    Title = "哈哈哈哈哈"
 
                 }
 

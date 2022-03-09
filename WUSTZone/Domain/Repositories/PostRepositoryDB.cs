@@ -44,7 +44,7 @@ namespace WUSTZone.Domain.Repositories
                     .ToList();   
         }
 
-        public List<Post> GetPostsByCategory(string category)
+        public List<Post> GetPostsByCategory(int category)
         {
             return context.Posts
                     .Where(Post => Post.Category == category)
@@ -70,5 +70,7 @@ namespace WUSTZone.Domain.Repositories
         {
             return context.Posts;
         }
+
+        
     }
 }

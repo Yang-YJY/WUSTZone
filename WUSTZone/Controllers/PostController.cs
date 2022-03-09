@@ -87,6 +87,5 @@ namespace WUSTZone.Controllers
             }
             return View();
         }
-
     }
 }

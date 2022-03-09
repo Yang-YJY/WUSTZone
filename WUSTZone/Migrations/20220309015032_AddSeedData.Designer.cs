@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WUSTZone.Domain;
 
 namespace WUSTZone.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220309015032_AddSeedData")]
+    partial class AddSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,83 +97,6 @@ namespace WUSTZone.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Posts");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1001,
-                            Category = 1,
-                            CommentCount = 0,
-                            Condensed = "",
-                            Content = "郭森泽二号",
-                            IsPinned = false,
-                            IsSelected = false,
-                            LikeCount = 0,
-                            Photo = "",
-                            TimeStamp = new DateTime(2022, 3, 9, 10, 7, 53, 729, DateTimeKind.Local).AddTicks(719),
-                            Title = "",
-                            UserId = 1
-                        },
-                        new
-                        {
-                            Id = 1002,
-                            Category = 1,
-                            CommentCount = 0,
-                            Condensed = "",
-                            Content = "郭森泽一号",
-                            IsPinned = false,
-                            IsSelected = false,
-                            LikeCount = 0,
-                            Photo = "",
-                            TimeStamp = new DateTime(2022, 3, 9, 10, 7, 53, 731, DateTimeKind.Local).AddTicks(8180),
-                            Title = "哈哈哈哈哈",
-                            UserId = 0
-                        },
-                        new
-                        {
-                            Id = 1003,
-                            Category = 3,
-                            CommentCount = 0,
-                            Condensed = "",
-                            Content = "郭森泽三号",
-                            IsPinned = false,
-                            IsSelected = false,
-                            LikeCount = 0,
-                            Photo = "",
-                            TimeStamp = new DateTime(2022, 3, 9, 10, 7, 53, 731, DateTimeKind.Local).AddTicks(8293),
-                            Title = "",
-                            UserId = 0
-                        },
-                        new
-                        {
-                            Id = 1004,
-                            Category = 1,
-                            CommentCount = 0,
-                            Condensed = "",
-                            Content = "郭森泽四号",
-                            IsPinned = false,
-                            IsSelected = false,
-                            LikeCount = 0,
-                            Photo = "",
-                            TimeStamp = new DateTime(2022, 3, 9, 10, 7, 53, 731, DateTimeKind.Local).AddTicks(8296),
-                            Title = "哈哈哈哈哈",
-                            UserId = 0
-                        },
-                        new
-                        {
-                            Id = 1005,
-                            Category = 1,
-                            CommentCount = 0,
-                            Condensed = "",
-                            Content = "郭森泽五号",
-                            IsPinned = false,
-                            IsSelected = false,
-                            LikeCount = 0,
-                            Photo = "",
-                            TimeStamp = new DateTime(2022, 3, 9, 10, 7, 53, 731, DateTimeKind.Local).AddTicks(8298),
-                            Title = "哈哈哈哈哈",
-                            UserId = 0
-                        });
                 });
 
             modelBuilder.Entity("WUSTZone.Domain.Entityies.User", b =>

@@ -42,7 +42,7 @@ namespace WUSTZone.Domain.Repositories
         /// </summary>
         /// <param name="category"></param>
         /// <returns>Post类实体集合</returns>
-        public List<Post> GetPostsByCategory(string category);
+        public List<Post> GetPostsByCategory(int category);
 
         /// <summary>
         /// 获取精选的留言集合
@@ -63,5 +63,6 @@ namespace WUSTZone.Domain.Repositories
         /// </summary>
         /// <returns></returns>
         public IEnumerable<Post> GetAllPosts();
+        
     }
 }

@@ -30,21 +30,95 @@ namespace WUSTZone.Controllers
 
         public IActionResult Index(int? pageIndex)
         {
-            if(pageIndex == null)
+            User currentUser = _userRepository.GetUser(User.Identity.Name);
+            ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
+
+            if (pageIndex == null)
             {
                 pageIndex = 1;
             }
             //每一页大小
             int pageSize = 10;
+            IEnumerable<Post> postList = null;
+            postList = _postRepository.GetAllPosts();
             //分页，类似java 的subList操作
+            List<Post> subList = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
+            return View(subList);
+
+        }
+
+        public IActionResult Gossip(int? pageIndex)
+        {
             User currentUser = _userRepository.GetUser(User.Identity.Name);
             ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
-
-            IEnumerable<Post> postList = _postRepository.GetAllPosts();
-
-            List<Post> subList =  postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
-
+            //每一页大小
+            int pageSize = 10;
+            if(pageIndex == null)
+            {
+                pageIndex = 1;
+            }
+            IEnumerable<Post> postList = null;
+            postList = _postRepository.GetPostsByCategory(1);
+            //分页，类似java 的subList操作
+            List<Post> subList = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
             return View(subList);
+
+        }
+
+
+        public IActionResult SeekHelp(int? pageIndex)
+        {
+            User currentUser = _userRepository.GetUser(User.Identity.Name);
+            ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
+            //每一页大小
+            int pageSize = 10;
+            if (pageIndex == null)
+            {
+                pageIndex = 1;
+            }
+            IEnumerable<Post> postList = null;
+            postList = _postRepository.GetPostsByCategory(2);
+            //分页，类似java 的subList操作
+            List<Post> subList = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
+            return View(subList);
+
+        }
+
+        public IActionResult TreeHole(int? pageIndex)
+        {
+            User currentUser = _userRepository.GetUser(User.Identity.Name);
+            ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
+            //每一页大小
+            int pageSize = 10;
+            if (pageIndex == null)
+            {
+                pageIndex = 1;
+            }
+            IEnumerable<Post> postList = null;
+            postList = _postRepository.GetPostsByCategory(3);
+            //分页，类似java 的subList操作
+            List<Post> subList = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
+            return View(subList);
+
+        }
+
+
+        public IActionResult Selected(int? pageIndex)
+        {
+            User currentUser = _userRepository.GetUser(User.Identity.Name);
+            ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
+            //每一页大小
+            int pageSize = 10;
+            if (pageIndex == null)
+            {
+                pageIndex = 1;
+            }
+            IEnumerable<Post> postList = null;
+            postList = _postRepository.GetPostsBySelected();
+            //分页，类似java 的subList操作
+            List<Post> subList = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
+            return View(subList);
+
         }
 
 

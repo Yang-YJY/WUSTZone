@@ -28,7 +28,7 @@ namespace WUSTZone.Domain.Entityies
         /// </summary>
         [Required]
         [Display(Name = "留言类别")]
-        public string Category { get; set; }
+        public int Category { get; set; }
 
         [Display(Name = "点赞数")]
         public int LikeCount { get; set; }
