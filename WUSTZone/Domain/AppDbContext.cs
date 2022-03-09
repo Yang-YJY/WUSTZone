@@ -13,6 +13,8 @@ namespace WUSTZone.Domain
 
         public DbSet<Post> Posts { get; set; }
 
+        public DbSet<Comment> Comments { get; set; }
+
         public AppDbContext(DbContextOptions options): base(options)
         {
 
@@ -24,5 +26,7 @@ namespace WUSTZone.Domain
             // 设置时间戳
             modelBuilder.Entity<Post>().Property(post => post.TimeStamp).HasDefaultValueSql("CURRENT_TIMESTAMP");
         }
+
+       
     }
 }

@@ -28,29 +28,18 @@ namespace WUSTZone.Controllers
             _postRepository = postRepository;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int? pageIndex)
         {
+            if(pageIndex == null)
+            {
+                pageIndex = 1;
+            }
+            //每一页大小
+            int pageSize = 10;
+            //分页，类似java 的subList操作
             User currentUser = _userRepository.GetUser(User.Identity.Name);
             ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
-            IEnumerable<Post> posts = _postRepository.GetAllPosts();
-            // 处理为Index页面要展示的内容
-            List<IndexViewModel> model = new List<IndexViewModel>();
-            foreach (var post in posts)
-            {
-                model.Add(new IndexViewModel
-                {
-                    Title = post.Title,
-                    UserName = _userRepository.GetUser(post.UserId).UserName,
-                    TimeStamp = post.TimeStamp,
-                    Category = post.Category,
-                    Condensed = post.Condensed,
-                    IsPinned = post.IsPinned,
-                    IsSelected = post.IsSelected,
-                    CommentCount = post.CommentCount,
-                    LikeCount = post.LikeCount
-                });
-            }
-            return View(model);
+            return View(_postRepository.GetAllPosts());
         }
 
 
