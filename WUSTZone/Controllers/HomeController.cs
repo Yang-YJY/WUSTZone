@@ -28,6 +28,26 @@ namespace WUSTZone.Controllers
             _postRepository = postRepository;
         }
 
+        private List<IndexViewModel> getAnsList(List<Post> postList)
+        {
+            List<IndexViewModel> ansList = new List<IndexViewModel>();
+            foreach (Post post in postList)
+            {
+                IndexViewModel ans = new IndexViewModel();
+                ans.Title = post.Title;
+                ans.UserName = User.Identity.Name;
+                ans.TimeStamp = post.TimeStamp;
+                //ans.Category = post.Category;
+                ans.LikeCount = post.LikeCount;
+                ans.CommentCount = post.LikeCount;
+                ans.IsPinned = post.IsPinned;
+                ans.IsSelected = post.IsSelected;
+                ans.Condensed = post.Condensed;
+            }
+
+            return ansList;
+        }
+
         public IActionResult Index(int? pageIndex)
         {
             User currentUser = _userRepository.GetUser(User.Identity.Name);
@@ -43,11 +63,12 @@ namespace WUSTZone.Controllers
             postList = _postRepository.GetAllPosts();
             //分页，类似java 的subList操作
             List<Post> subList = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
-            return View(subList);
+            List<IndexViewModel> ansList = getAnsList(subList);
+            return View(ansList);
 
         }
 
-        public IActionResult Gossip(int? pageIndex)
+        public IActionResult Gossip(int? pageIndex) 
         {
             User currentUser = _userRepository.GetUser(User.Identity.Name);
             ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
@@ -61,7 +82,8 @@ namespace WUSTZone.Controllers
             postList = _postRepository.GetPostsByCategory(1);
             //分页，类似java 的subList操作
             List<Post> subList = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
-            return View(subList);
+            List<IndexViewModel> ansList = getAnsList(subList);
+            return View(ansList);
 
         }
 
@@ -80,7 +102,8 @@ namespace WUSTZone.Controllers
             postList = _postRepository.GetPostsByCategory(2);
             //分页，类似java 的subList操作
             List<Post> subList = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
-            return View(subList);
+            List<IndexViewModel> ansList = getAnsList(subList);
+            return View(ansList);
 
         }
 
@@ -98,7 +121,8 @@ namespace WUSTZone.Controllers
             postList = _postRepository.GetPostsByCategory(3);
             //分页，类似java 的subList操作
             List<Post> subList = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
-            return View(subList);
+            List<IndexViewModel> ansList = getAnsList(subList);
+            return View(ansList);
 
         }
 
@@ -117,7 +141,8 @@ namespace WUSTZone.Controllers
             postList = _postRepository.GetPostsBySelected();
             //分页，类似java 的subList操作
             List<Post> subList = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
-            return View(subList);
+            List<IndexViewModel> ansList = getAnsList(subList);
+            return View(ansList);
 
         }
 
