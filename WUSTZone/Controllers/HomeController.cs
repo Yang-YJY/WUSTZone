@@ -32,7 +32,25 @@ namespace WUSTZone.Controllers
         {
             User currentUser = _userRepository.GetUser(User.Identity.Name);
             ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
-            return View(_postRepository.GetAllPosts());
+            IEnumerable<Post> posts = _postRepository.GetAllPosts();
+            // 处理为Index页面要展示的内容
+            List<IndexViewModel> model = new List<IndexViewModel>();
+            foreach (var post in posts)
+            {
+                model.Add(new IndexViewModel
+                {
+                    Title = post.Title,
+                    UserName = _userRepository.GetUser(post.UserId).UserName,
+                    TimeStamp = post.TimeStamp,
+                    Category = post.Category,
+                    Condensed = post.Condensed,
+                    IsPinned = post.IsPinned,
+                    IsSelected = post.IsSelected,
+                    CommentCount = post.CommentCount,
+                    LikeCount = post.LikeCount
+                });
+            }
+            return View(model);
         }
 
 

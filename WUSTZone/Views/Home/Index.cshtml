@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WUSTZone.Domain.Entityies.Post>
+﻿@model IEnumerable<IndexViewModel>
 @{
     ViewData["Title"] = "主页";
 }
@@ -25,10 +25,13 @@
     <br />
     <div class="card">
         <div class="card-body">
-            <h4 class="card-title">@post.Title</h4>
+            <h4 class="card-title">@post.Title &nbsp; </h4>
             <p class="card-text">@post.Condensed...</p>
-            <a href="#" class="card-link">点赞(@post.LikeCount)</a>
-            <a href="#" class="card-link">评论(@post.CommentCount)</a>
+            <div>
+                <a href="#" class="card-link">点赞(@post.LikeCount)</a>
+                <a href="#" class="card-link">评论(@post.CommentCount)</a>
+                <span class="small text-right text-muted" style="float:right">由 @post.UserName 发布于 @post.TimeStamp</span>
+            </div>
         </div>
     </div>
 }
