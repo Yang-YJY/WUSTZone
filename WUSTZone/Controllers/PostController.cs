@@ -95,5 +95,19 @@ namespace WUSTZone.Controllers
             return RedirectToAction("myspace", "home");
         }
 
+
+        [HttpGet]
+        public IActionResult Update(int id)
+        {
+           
+            return View(_postRepository.GetPost(id));
+        }
+        [HttpPost]
+        public IActionResult Update(Post post)
+        {
+            
+
+            return RedirectToAction("myspace", "home");
+        }
     }
 }

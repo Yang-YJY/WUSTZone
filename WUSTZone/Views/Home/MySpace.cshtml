@@ -28,7 +28,14 @@
                         <span class="badge badge-warning">精选</span>
                     }
                 </small>
-                <a href="#" class="small text-right text-muted" calss="card-link" style="float:right" data-toggle="modal" data-target="#myModal">删除</a>
+               
+                    <a href="#" class="small text-right text-muted" calss="card-link"  style="float:right" data-toggle="modal" data-target="#myModal">删除</a>
+             
+                    <span style="float:right">&nbsp;&nbsp</span>
+                
+                    <a  class="small text-right text-muted" calss="card-link" style="float:right" asp-controller="post" asp-action="update">修改</a>
+               
+                
 
             </h4>
             <p class="card-text">@post.Condensed...</p>

@@ -1,0 +1,54 @@
+﻿@model Post
+@using WUSTZone.Domain.Entityies
+@using WUSTZone.Domain.Enums;
+@{
+    ViewData["Title"] = "修改留言";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <h4 class="mb-3">修改留言</h4>
+        <form method="post" asp-controller="post" asp-action="update" enctype="multipart/form-data">
+
+            <div class="row">
+                <div class="col-md-9 mb-3">
+                    <label asp-for="Title">标题</label>
+                    <textarea class="form-control" rows="1" asp-for="Title"  readonly>@Model.Title</textarea>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label asp-for="Category">类别</label>
+                    <select class="custom-select d-block w-100" asp-for="Category" required>
+                           @if(@Model.Category == CategoryEnum.Gossip){
+                                <option value="CategoryEnum.Gossip">闲聊</option>
+                                <option value="CategoryEnum.SeekHelp">求助</option>
+                                <option value="CategoryEnum.TreeHole">树洞</option>
+                            }else if(@Model.Category == CategoryEnum.SeekHelp){
+                                <option value="CategoryEnum.SeekHelp">求助</option>
+                                <option value="CategoryEnum.Gossip">闲聊</option>
+                                <option value="CategoryEnum.TreeHole">树洞</option>
+                            }else if(@Model.Category == CategoryEnum.TreeHole){
+                                <option value="CategoryEnum.TreeHole">树洞</option>
+                                <option value="CategoryEnum.SeekHelp">求助</option>
+                                <option value="CategoryEnum.Gossip">闲聊</option>
+                            }else{
+                                
+                            }
+                        }
+                    </select>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Content">内容</label>
+                <textarea class="form-control" rows="10" asp-for="Content" value="@Model.Content"></textarea>
+            </div>
+
+
+            <hr class="mb-4">
+
+            <button class="btn btn-primary btn-lg btn-block" type="submit">修改</button>
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </form>
+    </div>
+</div>
+}
