@@ -12,13 +12,14 @@ namespace WUSTZone.Controllers
 {
     public class PostController : Controller
     {
-
+        private readonly ICommentRepository _commentRepository;
         private readonly IPostRepository _postRepository;
         private readonly IUserRepository _userRepository;
         private readonly IWebHostEnvironment webHostEnvironment;
 
-        public PostController(IPostRepository postRepository, IUserRepository userRepository,IWebHostEnvironment webHostEnvironment)
+        public PostController(IPostRepository postRepository, IUserRepository userRepository,ICommentRepository commentRepository, IWebHostEnvironment webHostEnvironment)
         {
+            _commentRepository = commentRepository;
             _postRepository = postRepository;
             _userRepository = userRepository;
             this.webHostEnvironment = webHostEnvironment;
@@ -89,13 +90,47 @@ namespace WUSTZone.Controllers
         }
 
 
+        private static void recursionDelete(int id)
+        {
+            List<Comment> commentList = _commentRepository.GetByFatherId(id);//一级评论下有子评论
+            if(commentList != null)
+            {
+                foreach (Comment comment in commentList)
+                {
+                    List<Comment> subCommnetList = _commentRepository.GetByFatherId(comment.FatherId);
+                    if(subCommnetList != null)
+                    {
+                        recursionDelete(comment.Id);
+                        _commentRepository.Delete(comment.Id);
+                    }
+                    else
+                    {
+                        _commentRepository.Delete(comment.Id);
+                    }
+                }
+            }
+            else//一级评论下没有子评论
+            {
+                _commentRepository.Delete(id);
+            }
+        }
+
         public IActionResult Delete(int id)
         {
-            if (_postRepository.Delete(id))
+
+            _postRepository.Delete(id); 
+
+            List<Comment> commentList = _commentRepository.GetByPostId(id);
+
+            foreach (Comment comment in commentList)
             {
-                return RedirectToAction("myspace", "home");
+                recursionDelete(comment.id);//找到所有一级评论
             }
-            return RedirectToAction("index", "home");
+
+            
+            return RedirectToAction("myspace", "home");
+            
+           
         }
 
 

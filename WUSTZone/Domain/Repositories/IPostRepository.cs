@@ -38,6 +38,9 @@ namespace WUSTZone.Domain.Repositories
         /// <returns>Post类实体集合</returns>
         public List<Post> GetPostsByUserId(int id);
 
+
+        
+
         /// <summary>
         /// 根据留言类型来获取留言集合
         /// </summary>
