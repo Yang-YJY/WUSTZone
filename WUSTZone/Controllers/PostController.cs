@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ using WUSTZone.Models;
 
 namespace WUSTZone.Controllers
 {
+    [Authorize]
     public class PostController : Controller
     {
         private readonly ICommentRepository _commentRepository;
@@ -76,7 +78,7 @@ namespace WUSTZone.Controllers
                     Title = postViewModel.Title,
                     Category = (CategoryEnum)postViewModel.Category,
                     Content = postViewModel.Content,
-                    Photo = photoNameCSV,
+                    Photo = photoNameCSV.Substring(0, photoNameCSV.Length - 1),
                     Condensed = postViewModel.Content.Substring(0, Math.Min(postViewModel.Content.Length - 1, 100)),
                     LikeCount = 0,
                     CommentCount = 0,

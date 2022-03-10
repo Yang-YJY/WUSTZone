@@ -1,0 +1,173 @@
+﻿@model PostDetailViewModel
+@using WUSTZone.Domain.Enums
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="container bg-white rounded">
+    @if (Model.Category != CategoryEnum.TreeHole)
+    {
+        <div class="row ml-1 pt-2 pb-2" style="align-items:center">
+            <div style="display: inline-block; position: relative; width: 50px; height: 50px; overflow: hidden; border-radius: 50%;">
+                <img style="vertical-align: middle; width: auto; height: 100%" src="@Model.UserPhotoPath" asp-append-version="true" />
+            </div>
+            <h4>
+                &nbsp;<b>@Model.UserName</b> 说：
+            </h4>
+        </div>
+    }
+    else
+    {
+        <div class="pt-2">
+            <h1 style="font:bold">匿名留言</h1>
+        </div>
+    }
+    <div class="card bg-light pt-1 pb-1">
+        <div class="row ml-4 mr-4">
+            <h3>
+                @Model.Title
+                <small>
+                    @switch (Model.Category)
+                    {
+                        case CategoryEnum.Gossip:<span class="badge badge-primary">闲聊</span> break;
+                        case CategoryEnum.SeekHelp: <span class="badge badge-danger">求助</span>break;
+                        case CategoryEnum.TreeHole:<span class="badge badge-success">树洞</span> break;
+                        default: <span class="badge badge-secondary">默认</span>break;
+                    }
+                    @if (Model.IsSelected)
+                    {
+                        <span class="badge badge-warning">精选</span>
+                    }
+                </small>
+            </h3>
+        </div>
+    </div>
+
+    <br />
+    <div class="small text-muted ml-4 mb-2">
+        发布于 @Model.TimeStamp
+    </div>
+    <div class="card bg-light">
+
+        <div class="row ml-4 mr-4 mt-2">
+            <p class="text-justify" style="line-height:150%">@Model.Content</p>
+        </div>
+
+        @if (Model.PhotoPaths.Count > 0)
+        {
+            foreach (string path in Model.PhotoPaths)
+            {
+                <div class="row ml-5 mr-5 mb-4 justify-content-center">
+                    <img src="/uploads/post_photo/@path" alt="图片不见了" class="img-thumbnail" />
+                </div>
+            }
+        }
+
+    </div>
+
+    <div class="row p-2">
+        <div class="col col-2 offset-4">
+            <input type="button" class="btn btn-danger" value="喜欢(@Model.LikeCount)" />
+        </div>
+        <div class="col col-2">
+            <button id="comment" type="button" class="btn btn-primary">我要评论</button>
+        </div>
+    </div>
+
+    <textarea id="comArea" class="form-control" rows="3" placeholder="在此输入评论..." style="display:none"></textarea>
+
+    <br />
+    <h2 style="font:bold">评论<span class="text-muted">(@Model.CommentCount)</span></h2>
+    <hr class="ml-1 mr-1 pb-1" />
+
+    @* 这个是展示效果用的 *@
+    @*@for (int i = 0; i < 8; i++)
+    {
+        <div class="p-1">
+            <div class="card">
+                <div class="card-body">
+
+                    <h5 class="card-title">
+                        UserName 回复 @Model.UserName：
+                    </h5>
+                    <p class="card-text">Some example text. Some example text.</p>
+                    <div>
+                        <a href="#" class="card-link">评论</a>
+                        <span class="small text-right text-muted" style="float:right">
+                            发布于 2021.08.1
+                        </span>
+                    </div>
+
+                    @for (int j = 0; j < 5; j++)
+                    {
+                        <hr class="m-1" />
+                        <div>
+                            <div class="row ml-4">
+                                <h6>UserName 回复 UserName：</h6>
+                            </div>
+                            <div class="row ml-4">
+                                <p class="text-justify">
+                                    This is some text.This is some text.This is some text.
+                                </p>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+    }*@
+
+    @if (Model.Comments.Count > 0)
+    {
+        foreach (var comment in Model.Comments)
+        {
+            <div class="p-1">
+                <div class="card">
+                    <div class="card-body">
+
+                        <h5 class="card-title">
+                            @comment.UserName 回复 @Model.UserName：
+                        </h5>
+                        <p class="card-text">@comment.Content</p>
+                        <div>
+                            <a href="#" class="card-link">评论</a>
+                            <span class="small text-right text-muted" style="float:right">
+                                评论于 @comment.TimeStamp
+                            </span>
+                        </div>
+
+                        @if (comment.SubComments.Count > 0)
+                        {
+                            foreach (var subComment in comment.SubComments)
+                            {
+                                <hr class="m-1" />
+                                <div>
+                                    <div class="row ml-4">
+                                        <h6>@subComment.UserName 回复 @comment.UserName：</h6>
+                                    </div>
+                                    <div class="row ml-4">
+                                        <p class="text-justify">
+                                            @subComment.Content
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    }
+
+</div>
+
+@section Scripts{ 
+    <script>
+        $(document).ready(function () {
+            $("#comment").click(function () {
+                $("#comArea").toggle();
+            });
+        });
+    </script>
+}

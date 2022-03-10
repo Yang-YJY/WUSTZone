@@ -21,13 +21,15 @@ namespace WUSTZone.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IUserRepository _userRepository;
         private readonly IPostRepository _postRepository;
+        private readonly ICommentRepository _commentRepository;
         private readonly int _pageSize;
 
-        public HomeController(ILogger<HomeController> logger, IUserRepository userRepository, IPostRepository postRepository)
+        public HomeController(ILogger<HomeController> logger, IUserRepository userRepository, IPostRepository postRepository, ICommentRepository commentRepository)
         {
             _logger = logger;
             _userRepository = userRepository;
             _postRepository = postRepository;
+            _commentRepository = commentRepository;
             _pageSize = 10;
         }
 
@@ -82,6 +84,66 @@ namespace WUSTZone.Controllers
             ViewBag.CurrentIndex = currentIndex;
             return View(trasfer(subList));
 
+        }
+
+        /// <summary>
+        /// 查看id为id的留言内容
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult Detail(int id)
+        {
+            User currentUser = _userRepository.GetUser(User.Identity.Name);
+            ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
+            Post post = _postRepository.GetPost(id);
+            List<Comment> comments = _commentRepository.GetByPostId(id);
+            User postUser = _userRepository.GetUser(post.UserId);
+            // 构建ViewModel
+            PostDetailViewModel model = new PostDetailViewModel
+            {
+                UserName = postUser.UserName,
+                UserPhotoPath = "/uploads/user_photo/" + (postUser.PhotoPath ?? "default.png"),
+                TimeStamp = post.TimeStamp,
+                Title = post.Title,
+                Category = post.Category,
+                IsSelected = post.IsSelected,
+                Content = post.Content,
+                PhotoPaths = post.Photo == null ? new List<string>() : post.Photo.Split(',').ToList(),
+                LikeCount = post.LikeCount,
+                CommentCount = post.CommentCount
+            };
+            // 构建ViewModel中的Comments
+            List<CommentViewModel> commentViewModels = new List<CommentViewModel>();
+            foreach (var comment in comments)
+            {
+                User commentUser = _userRepository.GetUser(comment.UserId);
+                CommentViewModel commentViewModel = new CommentViewModel
+                {
+                    UserName = commentUser.UserName,
+                    UserPhotoPath = "/uploads/user_photo/" + (commentUser.PhotoPath ?? "default.png"),
+                    TimeStamp = comment.TimeStamp,
+                    Content = comment.Content
+                };
+                // 构建Comments中的SubComments
+                List<BasicCommentViewModel> basicCommentViewModels = new List<BasicCommentViewModel>();
+                List<Comment> subComments = _commentRepository.GetByFatherId(comment.Id);
+                foreach (var subComment in subComments)
+                {
+                    User subCommentUser = _userRepository.GetUser(subComment.UserId);
+                    basicCommentViewModels.Add(new BasicCommentViewModel {
+                        UserName = subCommentUser.UserName,
+                        UserPhotoPath = "/uploads/user_photo/" + (subCommentUser.PhotoPath ?? "default.png"),
+                        TimeStamp = subComment.TimeStamp,
+                        Content = subComment.Content
+                    });
+                }
+                commentViewModel.SubComments = basicCommentViewModels;
+                commentViewModels.Add(commentViewModel);
+            }
+            model.Comments = commentViewModels;
+
+            return View(model);
         }
 
 
@@ -149,8 +211,6 @@ namespace WUSTZone.Controllers
                     IsPinned = post.IsPinned,
                     IsSelected = post.IsSelected,
                     Condensed = post.Condensed,
-
-
                     PostId = post.Id,
                     Content = post.Content,
                     
