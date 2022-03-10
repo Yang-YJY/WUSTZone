@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -148,6 +149,7 @@ namespace WUSTZone.Controllers
         /// 修改个人信息页面
         /// </summary>
         /// <returns></returns>
+        [Authorize]
         [HttpGet]
         public ViewResult Edit()
         {
@@ -164,7 +166,7 @@ namespace WUSTZone.Controllers
 
             return View(model);
         }
-
+        [Authorize]
         [HttpPost]
         public IActionResult Edit(AccountEditViewModel model)
         {

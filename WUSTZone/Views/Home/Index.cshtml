@@ -32,7 +32,9 @@
     <div class="card">
         <div class="card-body">
             <h4 class="card-title">
-                @post.Title &nbsp;
+                <a asp-controller="home" asp-action="detail" asp-route-id="@post.PostId" style="text-decoration:none; color:black"> 
+                    @post.Title &nbsp;
+                </a>
                 <small>
                     @switch (post.Category)
                     {
@@ -50,7 +52,7 @@
             <p class="card-text">@post.Condensed...</p>
             <div>
                 <a href="#" class="card-link">点赞(@post.LikeCount)</a>
-                <a href="#" class="card-link">评论(@post.CommentCount)</a>
+                <a  asp-controller="home" asp-action="detail" asp-route-id="@post.PostId" class="card-link">评论(@post.CommentCount)</a>
                 <span class="small text-right text-muted" style="float:right">
                     @if (post.Category != "树洞")
                     {
