@@ -1,7 +1,7 @@
 ﻿@model AccountEditViewModel
 @using WUSTZone.Domain.Enums
 @{
-    ViewData["Title"] = "修改个人信息";
+    ViewData["Title"] = "个人信息";
 }
 
 <div class="container bg-white rounded">
@@ -15,9 +15,8 @@
                 <br />
                 <div class="row">
                     <div class="col-md-4 mb-3">
-                        <label asp-for="UserName">用户名</label>
-                        <input type="text" class="form-control" asp-for="UserName" value="@Model.UserName" required>
-                        <span asp-validation-for="UserName" class="text-danger"></span>
+                        <label >用户名</label>
+                        <input type="text" class="form-control" value="@User.Identity.Name" disabled>
                     </div>
                     <div class="col-md-5 mb-3">
                         <label asp-for="College">学院</label>
@@ -26,11 +25,11 @@
                             {
                                 if (c.GetString() == Model.College)
                                 {
-                                    <option value="c" selected>@c.GetString()</option>
+                                    <option value="@c.GetString()" selected>@c.GetString()</option>
                                 }
                                 else
                                 {
-                                    <option value="c">@c.GetString()</option>
+                                    <option value="@c.GetString()">@c.GetString()</option>
                                 }
                             }
                         </select>
@@ -64,14 +63,14 @@
                 <h3 class="mb-3">用户头像</h3>
                 <br />
                 <div class=" row justify-content-center">
-                    <div class="mb-3" style="width:200px;height:200px">
-                        <img src="@ViewData["UserPhotoPath"]" style="width:auto;height:100%" />
+                    <div class="mb-3" style="width: 200px; height: 200px; overflow: hidden">
+                        <img id="img" src="@ViewData["UserPhotoPath"]" style="width:auto;height:100%" />
                     </div>
                 </div>
                 <div class="mb-3">
                     <label asp-for="Photo">头像<span class="text-muted">(可选)</span></label>
                     <div class="custom-file">
-                        <input asp-for="Photo" class="form-control custom-file-input" />
+                        <input asp-for="Photo" class="form-control custom-file-input" onchange="show(this)" />
                         <label class="custom-file-label">请选择照片...</label>
                     </div>
                 </div>
@@ -91,5 +90,17 @@
                 $(this).next(".custom-file-label").html(fileName);
             })
         });
+        function show(file) {
+            var reader = new FileReader();	// 实例化一个FileReader对象，用于读取文件
+            var img = document.getElementById('img'); 	// 获取要显示图片的标签
+
+            //读取File对象的数据
+            reader.onload = function (evt) {
+                img.width = "200";
+                img.height = "200";
+                img.src = evt.target.result;
+            }
+            reader.readAsDataURL(file.files[0]);
+        }
     </script>
 }

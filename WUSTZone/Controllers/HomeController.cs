@@ -139,9 +139,9 @@ namespace WUSTZone.Controllers
                 model.Add(new IndexViewModel
                 {
                     Title = post.Title,
-                    //UserName = _userRepository.GetUser(post.UserId).UserName,
+                    UserName = _userRepository.GetUser(post.UserId).UserName,
                     //测试正常，UserName暂时定死，等有正式数据在改，不然会出现用户找不到的情况，
-                    UserName = "GM",
+                    //UserName = "GM",
                     TimeStamp = post.TimeStamp,
                     Category = CategoryEnumExtensions.GetString(post.Category),
                     LikeCount = post.LikeCount,
