@@ -34,7 +34,7 @@ namespace WUSTZone.Domain.Repositories
         public List<Comment> GetByPostId(int id)
         {
             return context.Comments
-                    .Where(Comment => Comment.Id == id && Comment.FatherId == 0)
+                    .Where(Comment => Comment.PostId == id && Comment.FatherId == 0)
                     .ToList();
         }
 

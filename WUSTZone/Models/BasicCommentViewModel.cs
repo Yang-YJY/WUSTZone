@@ -14,6 +14,7 @@ namespace WUSTZone.Models
          * 3. 评论时间
          * 4. 评论内容
          */
+        public int Id { get; set; }
         public string UserName { get; set; }
         public string UserPhotoPath { get; set; }
         public DateTime TimeStamp { get; set; }

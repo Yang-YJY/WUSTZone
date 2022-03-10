@@ -22,6 +22,7 @@ namespace WUSTZone.Models
     /// </summary>
     public class PostDetailViewModel
     {
+        public int Id { get; set; }
         public string UserName { get; set; }
         // 完整可直接显示的路径
         public string UserPhotoPath { get; set; }

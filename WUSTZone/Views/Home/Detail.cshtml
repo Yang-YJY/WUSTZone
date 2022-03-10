@@ -65,16 +65,27 @@
 
     </div>
 
-    <div class="row p-2">
+    <div id="lc" class="row p-2">
         <div class="col col-2 offset-4">
-            <input type="button" class="btn btn-danger" value="喜欢(@Model.LikeCount)" />
+            <form method="post" asp-controller="home" asp-action="LikePost">
+                <input name="postId" value="@Model.Id" hidden  />
+                <button id="like" type="submit" class="btn btn-danger">我喜欢(<span id="like_count">@Model.LikeCount</span>)</button>
+            </form>
         </div>
         <div class="col col-2">
             <button id="comment" type="button" class="btn btn-primary">我要评论</button>
         </div>
     </div>
 
-    <textarea id="comArea" class="form-control" rows="3" placeholder="在此输入评论..." style="display:none"></textarea>
+    <div id="comArea" style="display:none" >
+        <form method="post" asp-controller="home" asp-action="CommentPost">
+            <input name="postId" value="@Model.Id" hidden />
+            <textarea name="comment" class="form-control" rows="3" placeholder="在此输入评论..." required></textarea>
+            <div class="pt-1" style="text-align:center">
+                <button class="btn btn-success" type="submit">确定</button>
+            </div>
+        </form>
+    </div>
 
     <br />
     <h2 style="font:bold">评论<span class="text-muted">(@Model.CommentCount)</span></h2>
@@ -127,7 +138,7 @@
                     <div class="card-body">
 
                         <h5 class="card-title">
-                            @comment.UserName 回复 @Model.UserName：
+                            @comment.UserName 评论：
                         </h5>
                         <p class="card-text">@comment.Content</p>
                         <div>
