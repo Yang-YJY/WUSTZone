@@ -102,6 +102,7 @@ namespace WUSTZone.Controllers
             // 构建ViewModel
             PostDetailViewModel model = new PostDetailViewModel
             {
+                Id = post.Id,
                 UserName = postUser.UserName,
                 UserPhotoPath = "/uploads/user_photo/" + (postUser.PhotoPath ?? "default.png"),
                 TimeStamp = post.TimeStamp,
@@ -120,6 +121,7 @@ namespace WUSTZone.Controllers
                 User commentUser = _userRepository.GetUser(comment.UserId);
                 CommentViewModel commentViewModel = new CommentViewModel
                 {
+                    Id = comment.Id,
                     UserName = commentUser.UserName,
                     UserPhotoPath = "/uploads/user_photo/" + (commentUser.PhotoPath ?? "default.png"),
                     TimeStamp = comment.TimeStamp,
@@ -132,6 +134,7 @@ namespace WUSTZone.Controllers
                 {
                     User subCommentUser = _userRepository.GetUser(subComment.UserId);
                     basicCommentViewModels.Add(new BasicCommentViewModel {
+                        Id = subComment.Id,
                         UserName = subCommentUser.UserName,
                         UserPhotoPath = "/uploads/user_photo/" + (subCommentUser.PhotoPath ?? "default.png"),
                         TimeStamp = subComment.TimeStamp,
@@ -146,6 +149,52 @@ namespace WUSTZone.Controllers
             return View(model);
         }
 
+        public IActionResult MySpace(int? pageIndex)
+        {
+            User currentUser = _userRepository.GetUser(User.Identity.Name);
+            ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
+            ViewBag.PageCount = GetPosts(_pageSize, pageIndex ?? 1, false, currentUser.Id, out var subList, out int currentIndex);
+            ViewBag.CurrentIndex = currentIndex;
+            return View(trasfer(subList));
+        }
+
+        /// <summary>
+        /// 给某个帖子点赞
+        /// </summary>
+        /// <param name="postId"></param>
+        [HttpPost]
+        public IActionResult LikePost(int postId)
+        {
+            Post post = _postRepository.GetPost(postId);
+            post.LikeCount += 1;
+            _postRepository.Update(post);
+            return RedirectToAction("detail", new { id = postId });
+        }
+
+        /// <summary>
+        /// 给某个帖子评论
+        /// </summary>
+        /// <param name="postId"></param>
+        /// <param name="comment"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult CommentPost(int postId, string comment)
+        {
+            User currentUser = _userRepository.GetUser(User.Identity.Name);
+            Comment newComment = new Comment
+            {
+                PostId = postId,
+                FatherId = 0,
+                Content = comment,
+                UserId = currentUser.Id
+            };
+            _commentRepository.Add(newComment);
+            Post post = _postRepository.GetPost(postId);
+            post.CommentCount += 1;
+            _postRepository.Update(post);
+
+            return RedirectToAction("detail", new { id = postId });
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -240,14 +289,6 @@ namespace WUSTZone.Controllers
             return pageCount;
         }
 
-        public IActionResult MySpace(int?pageIndex)
-        {
-            User currentUser = _userRepository.GetUser(User.Identity.Name);
-            ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
-            ViewBag.PageCount = GetPosts(_pageSize, pageIndex ?? 1, false, currentUser.Id, out var subList, out int currentIndex);
-            ViewBag.CurrentIndex = currentIndex;
-            return View(trasfer(subList));
-        }
 
     }
 }

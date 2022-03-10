@@ -7,9 +7,9 @@
     <h1 class="display-4">闲聊</h1>
 </div>
 <br />
-<ul class="nav nav-pills bg-light">
+<ul class="nav nav-pills bg-light mr-auto">
     <li class="nav-item">
-        <a class="nav-link " asp-controller="Home" asp-action="Index">全部留言</a>
+        <a class="nav-link" asp-controller="Home" asp-action="Index">全部留言</a>
     </li>
     <li class="nav-item">
         <a class="nav-link" asp-controller="Home" asp-action="Selected">精选留言</a>
@@ -22,6 +22,16 @@
     </li>
     <li class="nav-item">
         <a class="nav-link" asp-controller="Home" asp-action="TreeHole">树洞</a>
+    </li>
+    <!-- Dropdown -->
+    <li class="nav-item dropdown justify-content-end">
+        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+            排序方式
+        </a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">按时间</a>
+            <a class="dropdown-item" href="#">按热度</a>
+        </div>
     </li>
 </ul>
 
@@ -38,8 +48,8 @@
             </h4>
             <p class="card-text">@post.Condensed...</p>
             <div>
-                <a href="#" class="card-link">点赞(@post.LikeCount)</a>
-                <a asp-controller="home" asp-action="detail" asp-route-id="@post.PostId" class="card-link">评论(@post.CommentCount)</a>
+                <a href="/home/detail/@post.PostId#lc" class="card-link">点赞(@post.LikeCount)</a>
+                <a href="/home/detail/@post.PostId#lc" class="card-link">评论(@post.CommentCount)</a>
                 <span class="small text-right text-muted" style="float:right">由 @post.UserName 发布于 @post.TimeStamp</span>
             </div>
         </div>

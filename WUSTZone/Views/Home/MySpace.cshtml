@@ -10,61 +10,52 @@
     <div class="card">
         <div class="card-body">
 
-             
-
-
-            <h4 class="card-title">
-                @post.Title &nbsp;
-                <small>
-                    @switch (post.Category)
-                    {
-                        case "闲聊":<span class="badge badge-primary">闲聊</span> break;
-                        case "求助": <span class="badge badge-danger">求助</span>break;
-                        case "树洞": <span class="badge badge-success">树洞</span>break;
-                        case "默认": <span class="badge badge-secondary">默认</span>break;
-                    }
-                    @if (post.IsSelected)
-                    {
-                        <span class="badge badge-warning">精选</span>
-                    }
-                </small>
-               
-
-                    <div class="modal fade" id="myModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-body">确认删除此条留言？</div>
-                                <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                        <a class="btn btn-primary" asp-controller="post" asp-action="delete" asp-route-id="@post.PostId">确认</a>
-                                </div>
-                            </div>
+            <div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">确认删除此条留言？</div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <a class="btn btn-primary" asp-controller="post" asp-action="delete" asp-route-id="@post.PostId">确认</a>
                         </div>
-                    </div>  
-
-
-                    <a href="#" class="small text-right text-muted" calss="card-link"  style="float:right" data-toggle="modal" data-target="#myModal">删除</a>
-             
-                    <span style="float:right">&nbsp;&nbsp</span>
-                
-                    <a  class="small text-right text-muted" calss="card-link" style="float:right" asp-controller="post" asp-action="update" asp-route-id="@post.PostId">修改</a>
-               
-                
-
-            </h4>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h4 class="card-title" style="display:inline-block;">
+                    @post.Title &nbsp;
+                    <small>
+                        @switch (post.Category)
+                        {
+                            case "闲聊":<span class="badge badge-primary">闲聊</span> break;
+                            case "求助": <span class="badge badge-danger">求助</span>break;
+                            case "树洞": <span class="badge badge-success">树洞</span>break;
+                            case "默认": <span class="badge badge-secondary">默认</span>break;
+                        }
+                        @if (post.IsSelected)
+                        {
+                            <span class="badge badge-warning">精选</span>
+                        }
+                    </small>
+                </h4>
+                <div class="dropdown" style="display:inline-block;float:right">
+                    <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+                        操作
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" data-toggle="modal" data-target="#myModal" href="#">删除</a>
+                        <a class="dropdown-item" asp-controller="post" asp-action="update" asp-route-id="@post.PostId">修改</a>
+                    </div>
+                </div>
+            </div>
             <p class="card-text">@post.Condensed...</p>
             <div>
                 <a href="#" class="card-link">点赞(@post.LikeCount)</a>
                 <a href="#" class="card-link">评论(@post.CommentCount)</a>
-                
-                <span class="small text-right text-muted" style="float:right">由 @post.UserName 发布于 @post.TimeStamp</span>
-                
+
+                <span class="small text-right text-muted" style="float:right">发布于 @post.TimeStamp</span>
+
             </div>
-
-
-             
-
-
 
         </div>          
     </div>
