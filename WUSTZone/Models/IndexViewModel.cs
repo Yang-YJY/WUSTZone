@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WUSTZone.Domain.Enums;
 
 namespace WUSTZone.Models
 {
@@ -29,6 +30,14 @@ namespace WUSTZone.Models
         public string Condensed { get; set; }
 
 
+
+
+
+   
         public int PostId { get; set; }
+
+        public string Content { get; set; }
+
+        
     }
 }

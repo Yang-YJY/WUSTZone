@@ -29,11 +29,25 @@
                     }
                 </small>
                
+
+                    <div class="modal fade" id="myModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-body">确认删除此条留言？</div>
+                                <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                        <a class="btn btn-primary" asp-controller="post" asp-action="delete" asp-route-id="@post.PostId">确认</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+
+
                     <a href="#" class="small text-right text-muted" calss="card-link"  style="float:right" data-toggle="modal" data-target="#myModal">删除</a>
              
                     <span style="float:right">&nbsp;&nbsp</span>
                 
-                    <a  class="small text-right text-muted" calss="card-link" style="float:right" asp-controller="post" asp-action="update">修改</a>
+                    <a  class="small text-right text-muted" calss="card-link" style="float:right" asp-controller="post" asp-action="update" asp-route-id="@post.PostId">修改</a>
                
                 
 
@@ -48,23 +62,44 @@
             </div>
 
 
-             <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-body">确认删除此条留言？</div>
-                        <div class="modal-footer">
-                            <small>
-                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                                @*<button type="button" class="btn btn-primary" asp-controller="post" asp-action="delete" asp-route-id="@post.PostId">确认</button>*@
-                                <a class="btn btn-primary" asp-controller="post" asp-action="delete" asp-route-id="@post.PostId">确认</a>
-                            </small>
-                        </div>
-                    </div>
-                </div>
-            </div>
+             
 
 
 
         </div>          
     </div>
 }
+
+@* 分页 *@
+<br/>
+<div class="container">
+    <ul class="pagination justify-content-center">
+        @if (ViewBag.CurrentIndex == 1)
+        {
+            <li class="page-item disabled"><a class="page-link">上一页</a></li>
+        }
+        else
+        {
+            <li class="page-item"><a class="page-link" asp-controller="home" asp-action="index" asp-route-pageIndex="@(ViewBag.CurrentIndex - 1)">上一页</a></li>
+        }
+        @for (int i = 1; i <= ViewBag.PageCount; i++)
+        {
+            if (i == ViewBag.CurrentIndex)
+            {
+                <li class="page-item active"><a class="page-link">@i</a></li>
+            }
+            else
+            {
+                <li class="page-item"><a class="page-link" asp-controller="home" asp-action="index" asp-route-pageIndex="@i">@i</a></li>
+            }
+        }
+        @if (ViewBag.CurrentIndex == ViewBag.PageCount)
+        {
+            <li class="page-item disabled"><a class="page-link">下一页</a></li>
+        }
+        else
+        {
+            <li class="page-item"><a class="page-link"  asp-controller="home" asp-action="index" asp-route-pageIndex="@(ViewBag.CurrentIndex + 1)">下一页</a></li>
+        }
+    </ul>
+</div>

@@ -28,6 +28,7 @@ namespace WUSTZone.Domain.Repositories
             if(post != null)
             {
                 context.Posts.Remove(post);
+                context.SaveChanges();
                 return true;
             }
             return false;

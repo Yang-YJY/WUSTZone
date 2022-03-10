@@ -149,30 +149,43 @@ namespace WUSTZone.Controllers
                     IsPinned = post.IsPinned,
                     IsSelected = post.IsSelected,
                     Condensed = post.Condensed,
-                    PostId = post.Id
-                });
+
+
+                    PostId = post.Id,
+                    Content = post.Content,
+                    
+                }); ;
             }
             return model;
         }
 
 
+        //重构函数，不要删除
+        private int GetPosts(int pageSize, int pageIndex, bool selected, int id, out List<Post> posts, out int currentIndex)
+        {
+            IEnumerable<Post> postList = null;
+            if (selected)
+            {
+                postList = _postRepository.GetPostsBySelected();
+            }
+            postList = _postRepository.GetPostsByUserId(id);
+            // 总页数
+            int pageCount = (int)Math.Ceiling((double)postList.Count() / pageSize);
+            pageIndex = pageIndex >= pageCount ? pageCount : pageIndex;
+            currentIndex = pageIndex;
+
+            //分页，类似java 的subList操作
+            posts = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
+
+            return pageCount;
+        }
 
         public IActionResult MySpace(int?pageIndex)
         {
-
             User currentUser = _userRepository.GetUser(User.Identity.Name);
             ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
-
-            if (pageIndex == null)
-            {
-                pageIndex = 1;
-            }
-            //每一页大小
-            int pageSize = 10;
-            IEnumerable<Post> postList = null;
-            postList = _postRepository.GetPostsByUserId(currentUser.Id);
-            //分页，类似java 的subList操作
-            List<Post> subList = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
+            ViewBag.PageCount = GetPosts(_pageSize, pageIndex ?? 1, false, currentUser.Id, out var subList, out int currentIndex);
+            ViewBag.CurrentIndex = currentIndex;
             return View(trasfer(subList));
         }
 

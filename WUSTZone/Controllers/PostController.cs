@@ -91,21 +91,40 @@ namespace WUSTZone.Controllers
 
         public IActionResult Delete(int id)
         {
-            _postRepository.Delete(id);
-            return RedirectToAction("myspace", "home");
+            if (_postRepository.Delete(id))
+            {
+                return RedirectToAction("myspace", "home");
+            }
+            return RedirectToAction("index", "home");
         }
 
 
         [HttpGet]
         public IActionResult Update(int id)
         {
-           
-            return View(_postRepository.GetPost(id));
+
+            Post post = _postRepository.GetPost(id);           
+
+            if(post == null)
+            {
+                return RedirectToAction("myspace", "home");
+            }
+            return View(post);
         }
+
+
         [HttpPost]
-        public IActionResult Update(Post post)
+        public IActionResult Update(Post newPost)
         {
-            
+            Post post = _postRepository.GetPost(newPost.Id);
+
+            post.Content = newPost.Content;
+
+            post.Category = newPost.Category;
+
+            post.Condensed = newPost.Content.Substring(0, Math.Min(newPost.Content.Length - 1, 100));
+
+            _postRepository.Update(post);
 
             return RedirectToAction("myspace", "home");
         }
