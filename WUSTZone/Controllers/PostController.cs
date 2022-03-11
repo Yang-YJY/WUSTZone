@@ -55,7 +55,7 @@ namespace WUSTZone.Controllers
             if (ModelState.IsValid)
             {
                 string uniqueFileName = null;
-                string photoNameCSV = null;
+                string photoNameCSV = "";
                 if (postViewModel.Photos != null)
                 {
                     foreach (var photo in postViewModel.Photos)
@@ -78,7 +78,7 @@ namespace WUSTZone.Controllers
                     Title = postViewModel.Title,
                     Category = (CategoryEnum)postViewModel.Category,
                     Content = postViewModel.Content,
-                    Photo = photoNameCSV.Substring(0, photoNameCSV.Length - 1),
+                    Photo =photoNameCSV==""?"": photoNameCSV.Substring(0, photoNameCSV.Length - 1),
                     Condensed = postViewModel.Content.Substring(0, Math.Min(postViewModel.Content.Length - 1, 100)),
                     LikeCount = 0,
                     CommentCount = 0,
@@ -117,23 +117,23 @@ namespace WUSTZone.Controllers
         //    }
         //}
 
-        //public IActionResult Delete(int id)
-        //{
+        public IActionResult Delete(int id)
+        {
 
-        //    _postRepository.Delete(id); 
+            _postRepository.Delete(id);
 
-        //    List<Comment> commentList = _commentRepository.GetByPostId(id);
+            //List<Comment> commentList = _commentRepository.GetByPostId(id);
 
-        //    foreach (Comment comment in commentList)
-        //    {
-        //        recursionDelete(comment.id);//找到所有一级评论
-        //    }
+            //foreach (Comment comment in commentList)
+            //{
+            //    recursionDelete(comment.id);//找到所有一级评论
+            //}
 
-            
-        //    return RedirectToAction("myspace", "home");
-            
-           
-        //}
+
+            return RedirectToAction("myspace", "home");
+
+
+        }
 
 
         [HttpGet]
