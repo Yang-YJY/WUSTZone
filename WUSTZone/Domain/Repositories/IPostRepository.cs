@@ -38,6 +38,9 @@ namespace WUSTZone.Domain.Repositories
         /// <returns>Post类实体集合</returns>
         public List<Post> GetPostsByUserId(int id);
 
+
+        
+
         /// <summary>
         /// 根据留言类型来获取留言集合
         /// </summary>
@@ -46,11 +49,40 @@ namespace WUSTZone.Domain.Repositories
         public List<Post> GetPostsByCategory(CategoryEnum category);
 
         /// <summary>
+        /// 根据留言类型来获取留言集合，按创造时间降序排列
+        /// </summary>
+        /// <param name="category"></param>
+        /// <returns>Post类实体集合</returns>
+        public List<Post> GetPostsByCategoryAndTimeDesc(CategoryEnum category);
+
+        /// <summary>
+        /// 根据留言类型来获取留言集合，按点赞数降序排列
+        /// </summary>
+        /// <param name="category"></param>
+        /// <returns>Post类实体集合</returns>
+        public List<Post> GetPostsByCategoryAndLikeCount(CategoryEnum category);
+
+
+        /// <summary>
         /// 获取精选的留言集合
         /// </summary>
         /// <returns>Post类实体集合</returns>
         public List<Post> GetPostsBySelected();
-        
+
+
+        /// <summary>
+        /// 获取精选的留言集合，按创造时间降序排列
+        /// </summary>
+        /// <returns>Post类实体集合</returns>
+        public List<Post> GetPostsBySelectedAndTimeDesc();
+
+
+        /// <summary>
+        /// 获取精选的留言集合，按点赞数降序排列
+        /// </summary>
+        /// <returns>Post类实体集合</returns>
+        public List<Post> GetPostsBySelectedAndLikeCount();
+
         /// <summary>
         /// 更新留言（点赞数，评论数，精选，置顶）
         /// 内容不做修改
@@ -64,6 +96,40 @@ namespace WUSTZone.Domain.Repositories
         /// </summary>
         /// <returns></returns>
         public IEnumerable<Post> GetAllPosts();
-        
+
+        /// <summary>
+        /// 获取全部留言，按创造时间降序排列
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Post> GetAllPostsByTimeDesc();
+
+        /// <summary>
+        /// 获取全部留言，按点赞数降序排列
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Post> GetAllPostsByLikeCount();
+
+
+        /// <summary>
+        /// 根据标题模糊查询
+        /// </summary>
+        /// <param name="title"></param>
+        /// <returns></returns>
+        public List<Post> GetPostsByTitle(string title);
+
+        /// <summary>
+        /// 根据标题模糊查询,按时间降序
+        /// </summary>
+        /// <param name="title"></param>
+        /// <returns></returns>
+        public List<Post> GetPostsByTitleAndTimeDesc(string title);
+
+        /// <summary>
+        /// 根据标题模糊查询,按点赞数降序
+        /// </summary>
+        /// <param name="title"></param>
+        /// <returns></returns>
+        public List<Post> GetPostsByTitleAndLikeCount(string title);
+
     }
 }

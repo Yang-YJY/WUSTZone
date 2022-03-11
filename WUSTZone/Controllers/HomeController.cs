@@ -40,8 +40,61 @@ namespace WUSTZone.Controllers
             ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
             ViewBag.PageCount = GetPosts(_pageSize, pageIndex ?? 1, false, null, out var subList , out int currentIndex);
             ViewBag.CurrentIndex = currentIndex;
-            return View(trasfer(subList));
+            return View(IndexTrasfer(subList));
         }
+
+
+        public IActionResult IndexTime(int? pageIndex)
+        {
+            User currentUser = _userRepository.GetUser(User.Identity.Name);
+            ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
+            ViewBag.PageCount = GetPostsByTime(_pageSize, pageIndex ?? 1, false, null, out var subList, out int currentIndex);
+            ViewBag.CurrentIndex = currentIndex;
+            return View(IndexTrasfer(subList));
+        }
+
+        public IActionResult IndexLike(int? pageIndex)
+        {
+            User currentUser = _userRepository.GetUser(User.Identity.Name);
+            ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
+            ViewBag.PageCount = GetPostsByLikeCount(_pageSize, pageIndex ?? 1, false, null, out var subList, out int currentIndex);
+            ViewBag.CurrentIndex = currentIndex;
+            return View(IndexTrasfer(subList));
+        }
+
+
+
+        private IndexEtentionViewModel IndexTrasfer(List<Post> posts)
+        {
+            IndexEtentionViewModel indexEtentionViewModel = new IndexEtentionViewModel();
+            // 转换为IndexViewModel
+            List<IndexViewModel> model = new List<IndexViewModel>();
+            foreach (var post in posts)
+            {
+                model.Add(new IndexViewModel
+                {
+                    Title = post.Title,
+                    //UserName = _userRepository.GetUser(post.UserId).UserName,
+                    //测试正常，UserName暂时定死，等有正式数据在改，不然会出现用户找不到的情况，
+                    UserName = "GM",
+                    TimeStamp = post.TimeStamp,
+                    Category = CategoryEnumExtensions.GetString(post.Category),
+                    LikeCount = post.LikeCount,
+                    CommentCount = post.CommentCount,
+                    IsPinned = post.IsPinned,
+                    IsSelected = post.IsSelected,
+                    Condensed = post.Condensed,
+                    PostId = post.Id,
+                    Content = post.Content,
+
+                }); ;
+            }
+
+            indexEtentionViewModel.IndexViewModelList = model;
+
+            return indexEtentionViewModel;
+        }
+
 
 
         public IActionResult Gossip(int? pageIndex)
@@ -49,6 +102,26 @@ namespace WUSTZone.Controllers
             User currentUser = _userRepository.GetUser(User.Identity.Name);
             ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
             ViewBag.PageCount = GetPosts(_pageSize, pageIndex ?? 1, false, CategoryEnum.Gossip, out var subList, out int currentIndex);
+            ViewBag.CurrentIndex = currentIndex;
+            return View(trasfer(subList));
+
+        }
+
+        public IActionResult GossipTime(int? pageIndex)
+        {
+            User currentUser = _userRepository.GetUser(User.Identity.Name);
+            ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
+            ViewBag.PageCount = GetPostsByTime(_pageSize, pageIndex ?? 1, false, CategoryEnum.Gossip, out var subList, out int currentIndex);
+            ViewBag.CurrentIndex = currentIndex;
+            return View(trasfer(subList));
+
+        }
+
+        public IActionResult GossipLike(int? pageIndex)
+        {
+            User currentUser = _userRepository.GetUser(User.Identity.Name);
+            ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
+            ViewBag.PageCount = GetPostsByLikeCount(_pageSize, pageIndex ?? 1, false, CategoryEnum.Gossip, out var subList, out int currentIndex);
             ViewBag.CurrentIndex = currentIndex;
             return View(trasfer(subList));
 
@@ -65,11 +138,51 @@ namespace WUSTZone.Controllers
 
         }
 
+        public IActionResult SeekHelpTime(int? pageIndex)
+        {
+            User currentUser = _userRepository.GetUser(User.Identity.Name);
+            ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
+            ViewBag.PageCount = GetPostsByTime(_pageSize, pageIndex ?? 1, false, CategoryEnum.SeekHelp, out var subList, out int currentIndex);
+            ViewBag.CurrentIndex = currentIndex;
+            return View(trasfer(subList));
+
+        }
+
+        public IActionResult SeekHelpLike(int? pageIndex)
+        {
+            User currentUser = _userRepository.GetUser(User.Identity.Name);
+            ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
+            ViewBag.PageCount = GetPostsByLikeCount(_pageSize, pageIndex ?? 1, false, CategoryEnum.SeekHelp, out var subList, out int currentIndex);
+            ViewBag.CurrentIndex = currentIndex;
+            return View(trasfer(subList));
+
+        }
+
         public IActionResult TreeHole(int? pageIndex)
         {
             User currentUser = _userRepository.GetUser(User.Identity.Name);
             ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
             ViewBag.PageCount = GetPosts(_pageSize, pageIndex ?? 1, false, CategoryEnum.TreeHole, out var subList, out int currentIndex);
+            ViewBag.CurrentIndex = currentIndex;
+            return View(trasfer(subList));
+
+        }
+
+        public IActionResult TreeHoleTime(int? pageIndex)
+        {
+            User currentUser = _userRepository.GetUser(User.Identity.Name);
+            ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
+            ViewBag.PageCount = GetPostsByTime(_pageSize, pageIndex ?? 1, false, CategoryEnum.TreeHole, out var subList, out int currentIndex);
+            ViewBag.CurrentIndex = currentIndex;
+            return View(trasfer(subList));
+
+        }
+
+        public IActionResult TreeHoleLikeCount(int? pageIndex)
+        {
+            User currentUser = _userRepository.GetUser(User.Identity.Name);
+            ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
+            ViewBag.PageCount = GetPostsByLikeCount(_pageSize, pageIndex ?? 1, false, CategoryEnum.TreeHole, out var subList, out int currentIndex);
             ViewBag.CurrentIndex = currentIndex;
             return View(trasfer(subList));
 
@@ -86,13 +199,33 @@ namespace WUSTZone.Controllers
 
         }
 
+        public IActionResult SelectedTime(int? pageIndex)
+        {
+            User currentUser = _userRepository.GetUser(User.Identity.Name);
+            ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
+            ViewBag.PageCount = GetPostsByTime(_pageSize, pageIndex ?? 1, true, null, out var subList, out int currentIndex);
+            ViewBag.CurrentIndex = currentIndex;
+            return View(trasfer(subList));
+
+        }
+
+        public IActionResult SelectedLike(int? pageIndex)
+        {
+            User currentUser = _userRepository.GetUser(User.Identity.Name);
+            ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
+            ViewBag.PageCount = GetPostsByLikeCount(_pageSize, pageIndex ?? 1, true, null, out var subList, out int currentIndex);
+            ViewBag.CurrentIndex = currentIndex;
+            return View(trasfer(subList));
+
+        }
+
         /// <summary>
         /// 查看id为id的留言内容
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult Detail(int id)
+        public IActionResult Detail(int id)                     //测试的时候出问题了，等正式数据上去再来一次
         {
             User currentUser = _userRepository.GetUser(User.Identity.Name);
             ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
@@ -262,6 +395,73 @@ namespace WUSTZone.Controllers
             return pageCount;
         }
 
+
+        //根据时间来排序的获得分页
+        private int GetPostsByTime(int pageSize, int pageIndex, bool selected, CategoryEnum? category, out List<Post> posts, out int currentIndex)
+        {
+            IEnumerable<Post> postList = null;
+            if (selected)
+            {
+                postList = _postRepository.GetPostsBySelectedAndTimeDesc();
+            }
+            else if (category == null)
+            {
+                postList = _postRepository.GetAllPostsByTimeDesc();
+            }
+            else
+            {
+                switch (category)
+                {
+                    case CategoryEnum.Gossip: postList = _postRepository.GetPostsByCategoryAndTimeDesc(CategoryEnum.Gossip); break;
+                    case CategoryEnum.SeekHelp: postList = _postRepository.GetPostsByCategoryAndTimeDesc(CategoryEnum.SeekHelp); break;
+                    case CategoryEnum.TreeHole: postList = _postRepository.GetPostsByCategoryAndTimeDesc(CategoryEnum.TreeHole); break;
+                }
+            }
+            // 总页数
+            int pageCount = (int)Math.Ceiling((double)postList.Count() / pageSize);
+            pageIndex = pageIndex >= pageCount ? pageCount : pageIndex;
+            currentIndex = pageIndex;
+
+            //分页，类似java 的subList操作
+            posts = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
+
+            return pageCount;
+        }
+
+        //根据点赞数来排序的获得分页
+        private int GetPostsByLikeCount(int pageSize, int pageIndex, bool selected, CategoryEnum? category, out List<Post> posts, out int currentIndex)
+        {
+            IEnumerable<Post> postList = null;
+            if (selected)
+            {
+                postList = _postRepository.GetPostsBySelectedAndLikeCount();
+            }
+            else if (category == null)
+            {
+                postList = _postRepository.GetAllPostsByTimeDesc();
+            }
+            else
+            {
+                switch (category)
+                {
+                    case CategoryEnum.Gossip: postList = _postRepository.GetPostsByCategoryAndLikeCount(CategoryEnum.Gossip); break;
+                    case CategoryEnum.SeekHelp: postList = _postRepository.GetPostsByCategoryAndLikeCount(CategoryEnum.SeekHelp); break;
+                    case CategoryEnum.TreeHole: postList = _postRepository.GetPostsByCategoryAndLikeCount(CategoryEnum.TreeHole); break;
+                }
+            }
+            // 总页数
+            int pageCount = (int)Math.Ceiling((double)postList.Count() / pageSize);
+            pageIndex = pageIndex >= pageCount ? pageCount : pageIndex;
+            currentIndex = pageIndex;
+
+            //分页，类似java 的subList操作
+            posts = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
+
+            return pageCount;
+        }
+
+
+
         private List<IndexViewModel> trasfer(List<Post> posts)
         {
             // 转换为IndexViewModel
@@ -271,9 +471,9 @@ namespace WUSTZone.Controllers
                 model.Add(new IndexViewModel
                 {
                     Title = post.Title,
-                    UserName = _userRepository.GetUser(post.UserId).UserName,
+                    //UserName = _userRepository.GetUser(post.UserId).UserName,
                     //测试正常，UserName暂时定死，等有正式数据在改，不然会出现用户找不到的情况，
-                    //UserName = "GM",
+                    UserName = "GM",
                     TimeStamp = post.TimeStamp,
                     Category = CategoryEnumExtensions.GetString(post.Category),
                     LikeCount = post.LikeCount,
@@ -310,6 +510,97 @@ namespace WUSTZone.Controllers
             return pageCount;
         }
 
+        private int SearchGetPosts(int pageSize, int pageIndex, bool selected, string title, out List<Post> posts, out int currentIndex)
+        {
+            IEnumerable<Post> postList = null;
+            postList = _postRepository.GetPostsByTitle(title);
+            int pageCount = (int)Math.Ceiling((double)postList.Count() / pageSize);
+            pageIndex = pageIndex >= pageCount ? pageCount : pageIndex;
+            currentIndex = pageIndex;
+            posts = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
 
+            return pageCount;
+        }
+
+        private int SearchGetPostsByTime(int pageSize, int pageIndex, bool selected, string title, out List<Post> posts, out int currentIndex)
+        {
+            IEnumerable<Post> postList = null;
+            postList = _postRepository.GetPostsByTitleAndTimeDesc(title);
+            int pageCount = (int)Math.Ceiling((double)postList.Count() / pageSize);
+            pageIndex = pageIndex >= pageCount ? pageCount : pageIndex;
+            currentIndex = pageIndex;
+            posts = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
+
+            return pageCount;
+        }
+
+        private int SearchGetPostsByLikeCount(int pageSize, int pageIndex, bool selected, string title, out List<Post> posts, out int currentIndex)
+        {
+            IEnumerable<Post> postList = null;
+            postList = _postRepository.GetPostsByTitleAndLikeCount(title);
+            int pageCount = (int)Math.Ceiling((double)postList.Count() / pageSize);
+            pageIndex = pageIndex >= pageCount ? pageCount : pageIndex;
+            currentIndex = pageIndex;
+            posts = postList.Skip((int)((pageIndex - 1) * pageSize)).Take(pageSize).ToList();
+            return pageCount;
+        }
+
+
+
+
+        [HttpPost]
+        private IActionResult Search(IndexEtentionViewModel model)
+        {
+            if (model != null && model.Title != null)
+            {
+                int? pageIndex = 1;
+                User currentUser = _userRepository.GetUser(User.Identity.Name);
+                ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
+                ViewBag.PageCount = SearchGetPosts(_pageSize, pageIndex ?? 1, false, model.Title, out var subList, out int currentIndex);
+                ViewBag.CurrentIndex = currentIndex;
+                return View(trasfer(subList));
+            }
+            else
+            {
+                return RedirectToAction("index", "home");
+            }
+
+        }
+
+        private IActionResult SearchTime(IndexEtentionViewModel model)
+        {
+            if (model != null && model.Title != null)
+            {
+                int? pageIndex = 1;
+                User currentUser = _userRepository.GetUser(User.Identity.Name);
+                ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
+                ViewBag.PageCount = SearchGetPostsByTime(_pageSize, pageIndex ?? 1, false, model.Title, out var subList, out int currentIndex);
+                ViewBag.CurrentIndex = currentIndex;
+                return View(trasfer(subList));
+            }
+            else
+            {
+                return RedirectToAction("index", "home");
+            }
+
+        }
+
+        private IActionResult SearchLike(IndexEtentionViewModel model)
+        {
+            if (model != null && model.Title != null)
+            {
+                int? pageIndex = 1;
+                User currentUser = _userRepository.GetUser(User.Identity.Name);
+                ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
+                ViewBag.PageCount = SearchGetPostsByLikeCount(_pageSize, pageIndex ?? 1, false, model.Title, out var subList, out int currentIndex);
+                ViewBag.CurrentIndex = currentIndex;
+                return View(trasfer(subList));
+            }
+            else
+            {
+                return RedirectToAction("index", "home");
+            }
+
+        }
     }
 }

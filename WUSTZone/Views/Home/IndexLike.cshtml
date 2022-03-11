@@ -36,11 +36,11 @@
                 <a class="dropdown-item" asp-controller="Home" asp-action="IndexLike">按热度</a>
             </div>
         </li>
-        <form method="post" class="form-inline" asp-controller="Home" asp-action="Search" enctype="multipart/form-data">
+        <form method="post" class="form-inline" >
             <div class="input-group mb-3">
-                <input  type="text" class="form-control" placeholder="搜索标题" asp-for="Title">
+                <input  id="inputTitle" type="text" class="form-control" placeholder="搜索标题" asp-for="Title">
                 <div class="input-group-append">
-                    <button class="btn btn-secondary" type="submit">Go</button>
+                    <button class="btn btn-secondary" type="submit" asp-controller="home" asp-action="search" >Go</button>
                 </div>
             </div>
         </form>
