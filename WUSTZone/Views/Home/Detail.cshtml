@@ -142,10 +142,23 @@
                         </h5>
                         <p class="card-text">@comment.Content</p>
                         <div>
-                            <a href="#" class="card-link">评论</a>
-                            <span class="small text-right text-muted" style="float:right">
-                                评论于 @comment.TimeStamp
-                            </span>
+                            <div style="display:inline-block">
+                                <form method="post" class="form-inline" asp-controller="home" asp-action="CommentComment">
+                                    <input name="postId" value="@Model.Id" hidden />
+                                    <input name="commentId" value="@comment.Id" hidden />
+                                    <div class="input-group">
+                                        <input name="comment" type="text" class="form-control" placeholder="输入评论内容...">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-secondary" type="submit">确定</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div style="vertical-align:middle;display:inline-block;float:right;padding-top:8px">
+                                <span class="small text-right text-muted">
+                                    评论于 @comment.TimeStamp
+                                </span>
+                            </div>
                         </div>
 
                         @if (comment.SubComments.Count > 0)
@@ -155,7 +168,7 @@
                                 <hr class="m-1" />
                                 <div>
                                     <div class="row ml-4">
-                                        <h6>@subComment.UserName 回复 @comment.UserName：</h6>
+                                        <h6>@subComment.UserName 于<small>@subComment.TimeStamp</small>回复 @comment.UserName：</h6>
                                     </div>
                                     <div class="row ml-4">
                                         <p class="text-justify">

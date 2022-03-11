@@ -196,6 +196,27 @@ namespace WUSTZone.Controllers
             return RedirectToAction("detail", new { id = postId });
         }
 
+        /// <summary>
+        /// 给某个评论评论
+        /// </summary>
+        /// <param name="commentId"></param>
+        /// <param name="comment"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IActionResult CommentComment(int postId, int commentId, string comment)
+        {
+            User currentUser = _userRepository.GetUser(User.Identity.Name);
+            Comment newComment = new Comment
+            {
+                PostId = postId,
+                FatherId = commentId,
+                Content = comment,
+                UserId = currentUser.Id
+            };
+            _commentRepository.Add(newComment);
+            return RedirectToAction("detail", new { id = postId });
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
