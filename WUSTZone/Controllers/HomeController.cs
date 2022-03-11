@@ -247,7 +247,36 @@ namespace WUSTZone.Controllers
             ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png");
             ViewBag.PageCount = GetPosts(_pageSize, pageIndex ?? 1, false, currentUser.Id, out var subList, out int currentIndex);
             ViewBag.CurrentIndex = currentIndex;
-            return View(trasfer(subList));
+            MySpaceViewModel model = new MySpaceViewModel
+            {
+                UserName = currentUser.UserName,
+                UserPhotoPath = "/uploads/user_photo/" + (currentUser.PhotoPath ?? "default.png"),
+                Gender = currentUser.Gender,
+                College = currentUser.College,
+                Brief = currentUser.Brief,
+                Posts = trasfer(subList)
+            };
+
+            return View(model);
+        }
+
+        public IActionResult Space(string user, int? pageIndex)
+        {
+            User targetUser = _userRepository.GetUser(user);
+            ViewData["UserPhotoPath"] = "/uploads/user_photo/" + (targetUser.PhotoPath ?? "default.png");
+            ViewBag.PageCount = GetPosts(_pageSize, pageIndex ?? 1, false, targetUser.Id, out var subList, out int currentIndex);
+            ViewBag.CurrentIndex = currentIndex;
+            MySpaceViewModel model = new MySpaceViewModel
+            {
+                UserName = targetUser.UserName,
+                UserPhotoPath = "/uploads/user_photo/" + (targetUser.PhotoPath ?? "default.png"),
+                Gender = targetUser.Gender,
+                College = targetUser.College,
+                Brief = targetUser.Brief,
+                Posts = trasfer(subList)
+            };
+
+            return View("MySpace", model);
         }
 
         /// <summary>
@@ -523,7 +552,7 @@ namespace WUSTZone.Controllers
 
         }
 
-        public IActionResult SearchTime(IndexEtentionViewModel model)
+        public IActionResult SearchTime(IndexViewModel model)
         {
             if (model != null && model.Title != null)
             {
@@ -541,7 +570,7 @@ namespace WUSTZone.Controllers
 
         }
 
-        public IActionResult SearchLike(IndexEtentionViewModel model)
+        public IActionResult SearchLike(IndexViewModel model)
         {
             if (model != null && model.Title != null)
             {

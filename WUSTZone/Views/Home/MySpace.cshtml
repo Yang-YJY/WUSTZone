@@ -1,10 +1,39 @@
-﻿@model IEnumerable<IndexViewModel>
+﻿@model MySpaceViewModel
 @{
-    ViewData["Title"] = "我的留言";
+    ViewData["Title"] = Model.UserName + "的空间";
 }
 
+@* 个人信息 *@
+<div class="container">
+    <div class="row">
+        <div class="col col-3">
+            <div class=" row justify-content-center">
+                <div class="mb-3" style="width:200px;height:200px;overflow:hidden">
+                    <img class="img-thumbnail" src="@Model.UserPhotoPath" style="width:auto;height:100%" />
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="row">
+                <h1><img src="@(Model.Gender == "男" ? "/icons/男.png" : "/icons/女.png" )" /> @Model.UserName</h1>
+            </div>
+            <div class="row">
+                <h2>@Model.College</h2>
+            </div>
+            <br />
+            <div class="row">
+                <p class="text-justify">
+                    简介：@Model.Brief
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @* 卡片 *@
-@foreach (var post in Model)
+@foreach (var post in Model.Posts)
 {
     <br />
     <div class="card">
@@ -71,7 +100,7 @@
         }
         else
         {
-            <li class="page-item"><a class="page-link" asp-controller="home" asp-action="index" asp-route-pageIndex="@(ViewBag.CurrentIndex - 1)">上一页</a></li>
+            <li class="page-item"><a class="page-link" asp-controller="home" asp-action="Space" asp-route-user="@Model.UserName" asp-route-pageIndex="@(ViewBag.CurrentIndex - 1)">上一页</a></li>
         }
         @for (int i = 1; i <= ViewBag.PageCount; i++)
         {
@@ -81,7 +110,7 @@
             }
             else
             {
-                <li class="page-item"><a class="page-link" asp-controller="home" asp-action="index" asp-route-pageIndex="@i">@i</a></li>
+                <li class="page-item"><a class="page-link" asp-controller="home" asp-action="Space" asp-route-user="@Model.UserName" asp-route-pageIndex="@i">@i</a></li>
             }
         }
         @if (ViewBag.CurrentIndex == ViewBag.PageCount)
@@ -90,7 +119,7 @@
         }
         else
         {
-            <li class="page-item"><a class="page-link"  asp-controller="home" asp-action="index" asp-route-pageIndex="@(ViewBag.CurrentIndex + 1)">下一页</a></li>
+            <li class="page-item"><a class="page-link"  asp-controller="home" asp-action="Space" asp-route-user="@Model.UserName" asp-route-pageIndex="@(ViewBag.CurrentIndex + 1)">下一页</a></li>
         }
     </ul>
 </div>

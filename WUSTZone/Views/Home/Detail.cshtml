@@ -12,7 +12,7 @@
                 <img style="vertical-align: middle; width: auto; height: 100%" src="@Model.UserPhotoPath" asp-append-version="true" />
             </div>
             <h4>
-                &nbsp;<b>@Model.UserName</b> 说：
+                &nbsp;<a asp-controller="home" asp-action="space" asp-route-user="@Model.UserName"><b>@Model.UserName</b></a> 说：
             </h4>
         </div>
     }
