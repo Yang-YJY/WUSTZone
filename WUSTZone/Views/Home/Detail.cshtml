@@ -50,7 +50,7 @@
     <div class="card bg-light">
 
         <div class="row ml-4 mr-4 mt-2">
-            <p class="text-justify" style="line-height:150%">@Model.Content</p>
+            <p class="text-justify" style="line-height:150%">@Html.Raw(Model.Content)</p>
         </div>
 
         @if (Model.PhotoPaths.Count > 0)

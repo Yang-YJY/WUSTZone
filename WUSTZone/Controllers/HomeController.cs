@@ -202,7 +202,7 @@ namespace WUSTZone.Controllers
                 Category = post.Category,
                 IsSelected = post.IsSelected,
                 Content = post.Content,
-                PhotoPaths = post.Photo == null ? new List<string>() : post.Photo.Split(',').ToList(),
+                PhotoPaths = post.Photo == "" ? new List<string>() : post.Photo.Split(',').ToList(),
                 LikeCount = post.LikeCount,
                 CommentCount = post.CommentCount
             };
