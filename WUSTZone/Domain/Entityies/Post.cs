@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using WUSTZone.Domain.Enums;
 
 namespace WUSTZone.Domain.Entityies
@@ -62,4 +63,6 @@ namespace WUSTZone.Domain.Entityies
         public string Photo { get; set; }
         
     }
+
+   
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using WUSTZone.Domain.Entityies;
 using WUSTZone.Domain.Enums;
@@ -13,6 +14,10 @@ namespace WUSTZone.Domain.Repositories
         public PostRepositoryDB(AppDbContext context)
         {
             this.context = context;
+        }
+
+        public PostRepositoryDB()
+        {
         }
 
         public Post Add(Post post)
@@ -73,6 +78,68 @@ namespace WUSTZone.Domain.Repositories
             return context.Posts;
         }
 
-        
+        public List<Post> GetPostsByTitle(string title)
+        {
+            return context.Posts
+                .Where(Post => EF.Functions.Like(Post.Title,"%"+title+"%")).ToList();
+        }
+
+        public List<Post> GetPostsByCategoryAndTimeDesc(CategoryEnum category)
+        {
+            return context.Posts
+                    .Where(Post => Post.Category == category)
+                    .OrderByDescending(Post=>Post.TimeStamp)
+                    .ToList();
+        }
+
+        public List<Post> GetPostsByCategoryAndLikeCount(CategoryEnum category)
+        {
+            return context.Posts
+                   .Where(Post => Post.Category == category)
+                   .OrderByDescending(Post => Post.LikeCount)
+                   .ToList();
+        }
+
+        public List<Post> GetPostsBySelectedAndTimeDesc()
+        {
+            return context.Posts
+                    .Where(Post => Post.IsSelected == true)
+                    .OrderByDescending(Post => Post.TimeStamp)
+                    .ToList();
+        }
+
+        public List<Post> GetPostsBySelectedAndLikeCount()
+        {
+            return context.Posts
+                   .Where(Post => Post.IsSelected == true)
+                   .OrderByDescending(Post => Post.LikeCount)
+                   .ToList();
+        }
+
+        public IEnumerable<Post> GetAllPostsByTimeDesc()
+        {
+            return context.Posts.OrderByDescending(Post => Post.TimeStamp);
+        }
+
+        public IEnumerable<Post> GetAllPostsByLikeCount()
+        {
+            return context.Posts.OrderByDescending(Post => Post.LikeCount);
+        }
+
+        public List<Post> GetPostsByTitleAndTimeDesc(string title)
+        {
+            return context.Posts
+                .Where(Post => EF.Functions.Like(Post.Title, "%" + title + "%"))
+                .OrderByDescending(Post => Post.TimeStamp)
+                .ToList();
+        }
+
+        public List<Post> GetPostsByTitleAndLikeCount(string title)
+        {
+            return context.Posts
+                .Where(Post => EF.Functions.Like(Post.Title, "%" + title + "%"))
+                .OrderByDescending(Post => Post.LikeCount)
+                .ToList();
+        }
     }
 }

@@ -1,7 +1,6 @@
-﻿@*@model IEnumerable<IndexViewModel>*@
-@model IndexEtentionViewModel
+﻿@model IEnumerable<IndexViewModel>
 @{
-    ViewData["Title"] = "主页";
+    ViewData["Title"] = "搜索";
 }
 
 <div class="text-center">
@@ -26,29 +25,31 @@
         <li class="nav-item">
             <a class="nav-link" asp-controller="Home" asp-action="TreeHole">树洞</a>
         </li>
+
+        @*分页以及排序不知道怎么弄，因为要获取表单的输入内容*@
         <!-- Dropdown -->
-        <li class="nav-item dropdown">
+       @* <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
                 排序方式
             </a>
             <div class="dropdown-menu">
-                <a class="dropdown-item" asp-controller="Home" asp-action="IndexTime">按时间</a>
-                <a class="dropdown-item" asp-controller="Home" asp-action="IndexLike">按热度</a>
+                <a class="dropdown-item" asp-controller="Home" asp-action="SearchTime">按时间</a>
+                <a class="dropdown-item" asp-controller="Home" asp-action="SearchLike">按热度</a>
             </div>
         </li>
-        <form method="post" class="form-inline" asp-controller="Home" asp-action="Search" enctype="multipart/form-data">
+        <form method="post" class="form-inline" >
             <div class="input-group mb-3">
-                <input  type="text" class="form-control" placeholder="搜索标题" asp-for="Title">
+                <input  id="inputTitle" type="text" class="form-control" placeholder="搜索标题" asp-for="Title">
                 <div class="input-group-append">
-                    <button class="btn btn-secondary" type="submit">Go</button>
+                    <button class="btn btn-secondary" type="submit" asp-controller="home" asp-action="search" >Go</button>
                 </div>
             </div>
-        </form>
+        </form>*@
     </ul>
 </div>
 
 @* 卡片 *@
-@foreach (var post in Model.IndexViewModelList)
+@foreach (var post in Model)
 {
     <br />
     <div class="card">
@@ -88,11 +89,11 @@
     </div>
 }
 
-@* 分页 *@
-<br />
+ @*分页 *@
+<!--<br />
 <div class="container">
     <ul class="pagination justify-content-center">
-        @if (ViewBag.CurrentIndex == 1)
+        @*@if (ViewBag.CurrentIndex == 1)
         {
             <li class="page-item disabled"><a class="page-link">上一页</a></li>
         }
@@ -118,6 +119,6 @@
         else
         {
             <li class="page-item"><a class="page-link" asp-controller="home" asp-action="index" asp-route-pageIndex="@(ViewBag.CurrentIndex + 1)">下一页</a></li>
-        }
+        }*@
     </ul>
-</div>
+</div>-->
