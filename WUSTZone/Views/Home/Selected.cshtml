@@ -7,41 +7,33 @@
     <h1 class="display-4">精选</h1>
 </div>
 <br />
-<nav class="navbar p-0">
-    <div class="container p-0">
-        <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-            <ul class="navbar-nav ml-auto">
-                <!-- Dropdown -->
-                <li class="nav-item dropdown justify-content-end">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-                        排序方式
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" asp-controller="Home" asp-action="SelectedTime">按时间</a>
-                        <a class="dropdown-item" asp-controller="Home" asp-action="SelectedLike">按热度</a>
-                    </div>
-                </li>
-            </ul>
-            <ul class="nav nav-pills bg-light mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Home" asp-action="Index">全部留言</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" asp-controller="Home" asp-action="Selected">精选留言</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Home" asp-action="Gossip">闲聊</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Home" asp-action="SeekHelp">求助</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Home" asp-action="TreeHole">树洞</a>
-                </li>
-            </ul>
+
+<ul class="nav nav-pills bg-light">
+    <li class="nav-item">
+        <a class="nav-link" asp-controller="Home" asp-action="Index">全部留言</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" asp-controller="Home" asp-action="Selected">精选留言</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-controller="Home" asp-action="Gossip">闲聊</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-controller="Home" asp-action="SeekHelp">求助</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" asp-controller="Home" asp-action="TreeHole">树洞</a>
+    </li>
+    <li class="nav-item dropdown justify-content-end">
+        <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+            排序方式
+        </a>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" asp-controller="Home" asp-action="SelectedTime">按时间</a>
+            <a class="dropdown-item" asp-controller="Home" asp-action="SelectedLike">按热度</a>
         </div>
-    </div>
-</nav>
+    </li>
+</ul>
 
 @* 卡片 *@
 @foreach (var post in Model)

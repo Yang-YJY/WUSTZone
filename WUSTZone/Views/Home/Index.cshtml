@@ -1,5 +1,4 @@
-﻿@*@model IEnumerable<IndexViewModel>*@
-@model IndexEtentionViewModel
+﻿@model IEnumerable<IndexViewModel>
 @{
     ViewData["Title"] = "主页";
 }
@@ -36,9 +35,9 @@
                 <a class="dropdown-item" asp-controller="Home" asp-action="IndexLike">按热度</a>
             </div>
         </li>
-        <form method="post" class="form-inline" asp-controller="Home" asp-action="Search" enctype="multipart/form-data">
+        <form method="post" class="form-inline" asp-controller="Home" asp-action="Search">
             <div class="input-group mb-3">
-                <input  type="text" class="form-control" placeholder="搜索标题" asp-for="Title">
+                <input name="searchString" type="text" class="form-control" placeholder="搜索标题" />
                 <div class="input-group-append">
                     <button class="btn btn-secondary" type="submit">Go</button>
                 </div>
@@ -48,7 +47,7 @@
 </div>
 
 @* 卡片 *@
-@foreach (var post in Model.IndexViewModelList)
+@foreach (var post in Model)
 {
     <br />
     <div class="card">
