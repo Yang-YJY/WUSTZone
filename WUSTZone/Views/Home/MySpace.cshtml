@@ -74,7 +74,7 @@
                         操作
                     </button>
                     <div class="dropdown-menu">
-                        <a class="dropdown-item" data-toggle="modal" data-target="#myModal" href="#">删除</a>
+                        <a class="dropdown-item" data-toggle="modal" data-target="#myModal" asp-controller="post" asp-action="delete" asp-route-id="@post.PostId">删除</a>
                         <a class="dropdown-item" asp-controller="post" asp-action="update" asp-route-id="@post.PostId">修改</a>
                     </div>
                 </div>
