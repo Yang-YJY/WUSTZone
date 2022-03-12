@@ -9,15 +9,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>@ViewData["Title"] - WUSTZone</title>
+    <title>@ViewData["Title"] - 濠江学联</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="~/css/signin.css" rel="stylesheet" />
 </head>
 <body class="text-center">
 
     <form method="post" asp-controller="Account" asp-action="Login" class="form-signin">
-        <img class="mb-4" src="/favicon.ico" alt="" width="72" height="72">
-        <h1 class="h3 mb-3 font-weight-normal">请登录 WUST Zone</h1>
+        <img class="mb-4" src="/favicon.ico" alt="" width="72" height="72" asp-append-version="true">
+        <h1 class="h3 mb-3 font-weight-normal">请登录濠江学联</h1>
 
         <label asp-for="UserName" class="sr-only">用户名</label>
         <input asp-for="UserName" class="form-control" placeholder="用户名" autofocus required />

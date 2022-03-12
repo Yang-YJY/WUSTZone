@@ -95,12 +95,12 @@ namespace WUSTZone.Controllers
         //private static void recursionDelete(int id)
         //{
         //    List<Comment> commentList = _commentRepository.GetByFatherId(id);//一级评论下有子评论
-        //    if(commentList != null)
+        //    if (commentList != null)
         //    {
         //        foreach (Comment comment in commentList)
         //        {
         //            List<Comment> subCommnetList = _commentRepository.GetByFatherId(comment.FatherId);
-        //            if(subCommnetList != null)
+        //            if (subCommnetList != null)
         //            {
         //                recursionDelete(comment.Id);
         //                _commentRepository.Delete(comment.Id);
@@ -117,23 +117,23 @@ namespace WUSTZone.Controllers
         //    }
         //}
 
-        //public IActionResult Delete(int id)
-        //{
+        public IActionResult Delete(int id)
+        {
 
-        //    _postRepository.Delete(id); 
+            _postRepository.Delete(id);
 
-        //    List<Comment> commentList = _commentRepository.GetByPostId(id);
+            //List<Comment> commentList = _commentRepository.GetByPostId(id);
 
-        //    foreach (Comment comment in commentList)
-        //    {
-        //        recursionDelete(comment.id);//找到所有一级评论
-        //    }
+            //foreach (Comment comment in commentList)
+            //{
+            //    recursionDelete(comment.id);//找到所有一级评论
+            //}
 
-            
-        //    return RedirectToAction("myspace", "home");
-            
-           
-        //}
+
+            return RedirectToAction("myspace", "home");
+
+
+        }
 
 
         [HttpGet]
