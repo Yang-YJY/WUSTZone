@@ -135,7 +135,7 @@ namespace WUSTZone.Controllers
                     Password = registerViewModel.Password,
                     Gender = registerViewModel.Gender,
                     PhotoPath = uniqueFileName,
-                    College = college.GetString(),
+                    College = college.ToString(),
                     Brief = registerViewModel.Brief
                 };
 

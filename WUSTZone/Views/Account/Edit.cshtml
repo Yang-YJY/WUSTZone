@@ -6,7 +6,7 @@
 
 <div class="container bg-white rounded">
     <div class="row">
-        <div class="col-md-8 offset-2">
+        <div class="col-8 offset-2">
             <form method="post" asp-controller="account" asp-action="edit" enctype="multipart/form-data">
                 <input hidden asp-for="Id" />
                 <input hidden asp-for="ExistingPhotoPath" />
@@ -14,28 +14,28 @@
                 <h3 class="mb-3">个人信息</h3>
                 <br />
                 <div class="row">
-                    <div class="col-md-4 mb-3">
+                    <div class="col-4 mb-3">
                         <label >用户名</label>
                         <input type="text" class="form-control" value="@User.Identity.Name" disabled>
                     </div>
-                    <div class="col-md-5 mb-3">
+                    <div class="col-5 mb-3">
                         <label asp-for="College">学院</label>
                         <select asp-for="College" class="form-control">
                             @foreach (CollegeEnum c in Enum.GetValues(typeof(CollegeEnum)))
                             {
-                                if (c.GetString() == Model.College)
+                                if (c.ToString() == Model.College)
                                 {
-                                    <option value="@c.GetString()" selected>@c.GetString()</option>
+                                    <option value="@c.ToString()" selected>@c.ToString()</option>
                                 }
                                 else
                                 {
-                                    <option value="@c.GetString()">@c.GetString()</option>
+                                    <option value="@c.ToString()">@c.ToString()</option>
                                 }
                             }
                         </select>
                         <span asp-validation-for="College" class="text-danger"></span>
                     </div>
-                    <div class="col-md-3 mb-3">
+                    <div class="col-3 mb-3">
                         <label asp-for="Gender">性别</label>
                         <select class="custom-select d-block w-100" asp-for="Gender" required>
                             @if (@Model.Gender == "男")

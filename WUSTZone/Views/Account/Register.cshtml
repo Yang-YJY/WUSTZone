@@ -9,7 +9,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1.0, user-scalable=no">
     <title>@ViewData["Title"] - 濠江学联</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <style>
@@ -27,12 +27,12 @@
 
     <div class="container">
         <div class="py-5 text-center">
-            <img class="d-block mx-auto mb-4" src="/favicon.ico" alt="" width="72" height="72">
+            <img class="d-block mx-auto mb-4" src="/favicon.ico" alt="" width="72" height="72" asp-append-version="true">
             <h2>注册濠江学联账号</h2>
         </div>
 
         <div class="row">
-            <div class="col-md-6 offset-3">
+            <div class="col-6 offset-3">
                 <h4 class="mb-3">填写信息</h4>
                 <form method="post" asp-controller="account" asp-action="register" enctype="multipart/form-data">
 
@@ -62,10 +62,11 @@
 
                     <div class="row">
                         <div class="col-md-8 mb-3">
-                            <label asp-for="College">学院</label>
+                            <label asp-for="College">专业</label>
                             <select class="custom-select d-block w-100" asp-for="College" asp-items="Html.GetEnumSelectList<CollegeEnum>()" required>
                                 <option value="">选择学院</option>
                             </select>
+                            @*<input type="text" class="form-control" asp-for="College" placeholder="输入专业" required />*@
                             <span asp-validation-for="College" class="text-danger"></span>
                         </div>
                         <div class="col-md-4 mb-3">
